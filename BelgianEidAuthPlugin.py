@@ -11,7 +11,6 @@ from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 from Products.PluggableAuthService.utils import classImplements
 from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
 from Products.PluggableAuthService.interfaces.plugins import IExtractionPlugin
-from Products.PluggableAuthService.interfaces.plugins import ICredentialsResetPlugin
 
 from zLOG import LOG
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -39,16 +38,11 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
 
     meta_type = 'BelgianEidAuthPlugin'
 
-    #we have to bypass how it work because : we do not want the user to have to keep is eid card in the reader
-    #so, we have to save de credentials and wait for the user to log out
-    saved_credentials = {}
-    
     security = ClassSecurityInfo()
 
     def __init__(self, id, title=None):
         self._id = self.id = id
         self.title = title
-
 
     #
     #   IAuthenticationPlugin implementation
@@ -64,11 +58,9 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         
         debug = False
         print "BelgianEidAuthPlugin : debug mode is %s" % debug
-        print "credentials = %s" % credentials
         
         if debug:
-            fake_username, fake_login = "user2", "user2"
-            return fake_username, fake_login
+            return "User", "user"
         
         if credentials.has_key('eid_from_http'):
             #we received something, the user is using his eID card, proceed
@@ -80,7 +72,6 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             #XXX Beta version -->
             #we lookup if the user has already been logged
             #we search for nr in the existing users
-            
         else:
             return None
 
@@ -96,35 +87,19 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         print "from_http : %s" % from_http
         
         if from_http:
-            print "0\n"
             name, name2, nr = self.getClientData(from_http)
-            print "1\n"
             if name and name2 and nr:
-                print "2\n"
-                self.saved_credentials.update({'eid_name':name,
-                                               'eid_name2':name2,
-                                               'eid_nr':nr,
-                                               'eid_from_http':1
-                                              })
-                print "3\n"
-            return self.saved_credentials
+                creds = {}
+                creds.update({'eid_name':name,
+                              'eid_name2':name2,
+                              'eid_nr':nr,
+                              'eid_from_http':1
+                             })
+            return creds
         else:
-            #if we do not have what we need in the REQUEST, we check saved_credentials
-            if self.saved_credentials:
-                print "saved_credentials = %s" % self.saved_credentials
-                return self.saved_credentials
-            else:
-                #if we do not have any saved_credentials, we return None                
-                return None
+            #If we can not get this from the REQUEST, we are not in a correctly configured HTTPS mode
+            return None
 
-    security.declarePrivate('resetCredentials')
-    def resetCredentials(self, request, response):
-        """ 
-            When the user it the logout link, we have to reset the saved_credentials
-        """
-        print "\n\n\n\nRESET\n\n\n\n"
-        self.saved_credentials = {}
-    
     
     security.declarePrivate('getClientData')
     def getClientData(self, from_http):
@@ -145,6 +120,6 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         #we parse                
         return "Gauthier", "Bastien", "123456789"
                     
-classImplements(BelgianEidAuthPlugin, IAuthenticationPlugin, IExtractionPlugin, ICredentialsResetPlugin)
+classImplements(BelgianEidAuthPlugin, IAuthenticationPlugin, IExtractionPlugin)
 
 InitializeClass(BelgianEidAuthPlugin)
