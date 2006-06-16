@@ -15,6 +15,6 @@ def initialize(context):
                             , constructors=( manage_addBelgianEidAuthPluginForm
                                         , manage_addBelgianEidAuthPlugin
                                         )
-                            #, icon=''
+                             , icon='www/chip_eid.gif'
                             , visibility=None
                             )
