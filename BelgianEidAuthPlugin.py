@@ -15,6 +15,8 @@ from Products.PluggableAuthService.interfaces.plugins import IExtractionPlugin
 from zLOG import LOG
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
+from Products.CMFCore.utils import getToolByName
+
 manage_addBelgianEidAuthPluginForm = PageTemplateFile(
     'www/BelgianEidAdd', globals(), __name__='manage_addBelgianEidAuthPluginForm' )
 
@@ -64,11 +66,14 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         
         if credentials.has_key('eid_from_http'):
             #we received something, the user is using his eID card, proceed
-            debug=True
             #XXX Alpha1 Version
             #As test, we must have a created user with name from credentials['eid_name']
-            return credentials['eid_name'], credentials['eid_name']
-            
+            #we normalizeString the credentials and replace the '-' by '_' as '-' are not accepted for login name...
+            ptool = getToolByName(self, 'plone_utils', None)
+            normalized_login = ptool.normalizeString(credentials['eid_first_name'] + "_" + credentials['eid_name'])
+            normalized_login = normalized_login.replace('-','_')
+            return normalized_login, normalized_login
+
             #XXX Beta version -->
             #we lookup if the user has already been logged
             #we search for nr in the existing users
@@ -87,11 +92,11 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         print "from_http : %s" % from_http
         
         if from_http:
-            name, name2, nr = self.getClientData(from_http)
-            if name and name2 and nr:
+            name, first_name, nr = self.getClientData(from_http)
+            if name and first_name and nr:
                 creds = {}
                 creds.update({'eid_name':name,
-                              'eid_name2':name2,
+                              'eid_first_name':first_name,
                               'eid_nr':nr,
                               'eid_from_http':1
                              })
@@ -99,8 +104,8 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         else:
             #If we can not get this from the REQUEST, we are not in a correctly configured HTTPS mode
             return None
+        
 
-    
     security.declarePrivate('getClientData')
     def getClientData(self, from_http):
         """ 
@@ -113,13 +118,23 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             corrected_string = eval("u'" + from_http + "'")
             corrected_string = corrected_string.encode('latin1')
             corrected_string = unicode(corrected_string, 'utf-8')
+            datas = corrected_string.split('/')
+            #search for SN, GN and serialNumber
+            for data in datas:
+                if data[:2] == "SN":
+                    name = data[3:]
+                if data[:2] == "GN":
+                    first_name = data[3:]
+                if data[:12] == "serialNumber":
+                    nr = data[13:]
+     
         except Error:
             #if we encoutered an error doing this, we have to stop here
             return None, None, None
         #the string is corrected, we can parse it to retrieve the informations we want
-        #we parse                
-        return "Gauthier", "Bastien", "123456789"
-                    
+        #we parse
+        return name, first_name, nr
+            
 classImplements(BelgianEidAuthPlugin, IAuthenticationPlugin, IExtractionPlugin)
 
 InitializeClass(BelgianEidAuthPlugin)
