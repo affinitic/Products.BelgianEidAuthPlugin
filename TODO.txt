@@ -4,3 +4,4 @@
 --> check if the user exist, if not, do not connect (we can connect with a not existing user...)
 --> if the user does not exist, we do not connect him, but maybe we should give the possibility to add the user if we receive his certificate and the user is not subscribed yet ?
 --> how to add properties to a user ?  Still use portal_memberdata ?
+--> verify SESSION object when disconnect, need to call resetCredentials ???
