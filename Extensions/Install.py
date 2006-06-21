@@ -35,12 +35,34 @@ def install(self):
             mtool._actions = tuple(filtered)
             mtool.addAction(id="login",
                             name="Log in",
-                            action="string:${portal_url}\choose_connection_mode",
+                            action="string:${portal_url}/choose_connection_mode",
                             condition="not: member",
                             permission="View",
                             category="user",
                             visible=1,
                             REQUEST=None
                         )
+    
+    # Now we need to go through the skin configurations and insert
+    # directory_name into the configurations.  Preferably, this
+    # should be right after where 'custom' is placed.  Otherwise, we
+    # append it to the end.
+    skins = skinstool.getSkinSelections()
+    for skin in skins:
+        path = skinstool.getSkinPath(skin)
+        path = map(string.strip, string.split(path,','))
+        if directory_name not in path:
+            try: path.insert(path.index('custom')+1, directory_name)
+            except ValueError:
+                path.append(directory_name)
+                
+            path = string.join(path, ', ')
+            # addSkinSelection will replace existing skins as well.
+            skinstool.addSkinSelection(skin, path)
+            out.write("Added %s to %s skin\n" % (directory_name, skin))
+        else:
+            out.write("Skipping %s skin, %s is already set up\n" % (
+                skin, directory_name))
+
 
     return out.getvalue()
