@@ -73,6 +73,6 @@ def install(self):
             out.write("Adding MemberWithEid role")
             prm.addRole("MemberWithEid", "MemberWithEid", "A member that connect with his eID card")
         else:
-            out.write("MemberWithEid already exist")
+            out.write("MemberWithEid role already exist")
     
     return out.getvalue()
