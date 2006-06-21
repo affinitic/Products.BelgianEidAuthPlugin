@@ -6,6 +6,7 @@
 <body>
 
 <div metal:fill-slot="main">
+<tal:ask_connection_mode tal:condition="python: isAnon">
 <h1>Choisissez votre mode de connexion</h1>
 
 <p i18n:translate="description_sign_in">
@@ -33,11 +34,18 @@ Lorsque vous avez créé un compte, vous avez deux possibilités pour vous conne
 <li>A l'aide du nom d'utilisateur et du mot de passe qui vous ont été envoyés par e-mail, <a href="login_form">cliquez ici pour accéder au formulaire de connexion</a>
 </li>
 <!-- We redirect to logged_in because we need the MemberArea to be created !!! -->
-<li>A l'aide de votre carte d'identité électronique, insérez-la dans votre lecteur de carte et <a href="https://sambrep/ssl7/logged_in">cliquez ici pour vous connecter</a>
+<li>A l'aide de votre carte d'identité électronique, insérez-la dans votre lecteur de carte et <a href="https://sambrep/ssl/logged_in?came_from=choose_connection_mode">cliquez ici pour vous connecter</a>
 </li>
 </ul>
 
 <p>Si vous souhaitez obtenir des informations concernant la connexion par carte d'identité électronique, <a href="">cliquez ici</a>
+
+</tal:ask_connection_mode>
+<tal:connected tal:condition="python:not isAnon">
+<div tal:define="witheid context/roles_after_login">
+<p i18n:domain="" i18n:translate="help_after_connect">Your are now connected</p>
+</div>
+</tal:connected>
 </div>
 
 </body>

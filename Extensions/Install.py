@@ -63,6 +63,16 @@ def install(self):
         else:
             out.write("Skipping %s skin, %s is already set up\n" % (
                 skin, directory_name))
-
-
+    
+    
+    #Add the MemberWithEid role to PAS if no exist
+    if HAS_PLONEPAS:
+        pas = getToolByName(self, 'acl_users', None)
+        prm = pas.portal_role_manager
+        if not "MemberWithEid" in prm.listRoleIds():
+            out.write("Adding MemberWithEid role")
+            prm.addRole("MemberWithEid", "MemberWithEid", "A member that connect with his eID card")
+        else:
+            out.write("MemberWithEid already exist")
+    
     return out.getvalue()
