@@ -66,33 +66,22 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         
         if credentials.has_key('eid_from_http'):
             #we received something, the user is using his eID card, proceed
-            #XXX Alpha1 Version
-            #As test, we must have a created user with name from credentials['eid_name']
-            #we normalizeString the credentials and replace the '-' by '_' as '-' are not accepted for login name...
-            
             ptool = getToolByName(self, 'plone_utils', None)
             normalized_login = ptool.normalizeString(credentials['eid_nr'])
-            #normalized_login = normalized_login.replace('-','_')
             
             print self.REQUEST.SESSION
             if self.REQUEST.SESSION.has_key('eid_nr'):
                 #we already check in users if the actual user exist, we return it
-                print "we return the user"
+                #we return the user
                 return self.REQUEST.SESSION.get('eid_username'), self.REQUEST.SESSION.get('eid_username')
-                #we check here if the user exist
-                #search the retrieved national number (credentials['eid_nr']) in existing registered national number
-                #print "\n\n\nWe cheeeeeeeeeeeccccccckkkkkkk !!!\n\n\n"
             else:
-                #lookup user national register
+                #lookup user national register in registered users
                 self.REQUEST.SESSION.set('eid_nr', credentials['eid_nr'])
                 user_name = self.getUserNameFromNR(self.REQUEST.SESSION.get('eid_nr'))
-                print "We search user in users here with NR = %s" %credentials['eid_nr']
-                self.REQUEST.SESSION.set('eid_username', user_name)
+                if user_name:
+                    self.REQUEST.SESSION.set('eid_username', user_name)
+                #we will return None if the user has not be found in the database
                 return user_name, user_name
-
-            #XXX Beta version -->
-            #we lookup if the user has already been logged
-            #we search for nr in the existing users
         else:
             return None
 
@@ -105,7 +94,6 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         """
         if request.SESSION.has_key('eid_nr'):
             #we already parsed 'HTTP_SSL_CLIENT_S_DN', we use 'eid_name' stored in SESSION object
-            print "The user already exist, we do not use extractCredentials"
             creds = {}
             creds.update({'eid_nr':request.SESSION.get('eid_nr'),
                           'eid_from_http':1})
@@ -113,7 +101,6 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         else:
             #we play with 'HTTP_SSL_CLIENT_S_DN'
             from_http = request.get('HTTP_SSL_CLIENT_S_DN')
-            print "from_http : %s" % from_http
             if from_http:
                 nr = self.getClientData(from_http)
                 if nr:
@@ -148,11 +135,9 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         except Error:
             #if we encoutered an error doing this, we have to stop here
             return None
-        #the string is corrected, we can parse it to retrieve the informations we want
-        #we parse
-        return nr
-       
         
+        return nr
+
 
     security.declarePrivate('getUserNameFromNR')
     def getUserNameFromNR(self, nr):
@@ -165,8 +150,8 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                 return user.getId()
         
         return None
-        
-             
+
+
 classImplements(BelgianEidAuthPlugin, IAuthenticationPlugin, IExtractionPlugin)
 
 InitializeClass(BelgianEidAuthPlugin)
