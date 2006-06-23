@@ -5,3 +5,16 @@
 --> if the user does not exist, we do not connect him, but maybe we should give the possibility to add the user if we receive his certificate and the user is not subscribed yet ?
 --> how to add properties to a user ?  Still use portal_memberdata ?
 --> verify SESSION object when disconnect, need to call resetCredentials ???
+
+HISTORY :
+=========
+0.1 Beta1
+--> Connection based on national register number :
+	--> connection is available manually (username+passwd) and with eID card
+	--> connect user with eID if subscribed (lookup national register number)
+--> Depends on CPDescriptive product for memberdata extension and subscribing form
+
+0.1 Alpha1
+--> Connect with an existing user, without testing
+
+

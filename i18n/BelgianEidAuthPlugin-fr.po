@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2006-06-21 12:00-100\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Language-code: fr\n"
+"Language-name: French\n"
+"Preferred-encodings: utf-8 latin1\n"
+"Domain: belgianeidauthplugin\n"
+"X-is-fallback-for: fr-ca fr-be fr-fr\n"
+
+#choose_connection_mode
+msgid "welcome_after_connect"
+msgstr "Bienvenue, vous êtes bien connecté"
+
+msgid "help_after_connect_without_eid"
+msgstr "Pour profiter de l'authentification sécurisée, n'hésitez pas à vous connecter à l'aide de votre carte d'identité électronique.  Pour plus d'informations concernant l'authentification par carte d'identité électronique, <a href='http://eid.belgium.be' target='_blank'>cliquez ici.</a>"
+
+msgid "help_after_connect_with_eid"
+msgstr "Vous êtes connecté en mode sécurisé à l'aide de votre carte d'identité électronique.  Vous aurez dès lors accès à tous les services nécessitant une connexion sécurisée.  Afin de continuer à profiter de cette connexion sécurisée, continuez à vous connecter dorénavant à l'aide de votre carte d'identité électronique.  Si vous n'avez plus la possibilité de vous connecter à l'aide de votre carte d'identité électronique (perte, oubli, ...) vous aurez toujours la possibilité de vous connecter à l'aide du 'Nom d'utilisateur' et du 'Mot de passe' que vous avez choisi lors de la création de votre compte."
+  
+msgid "help_about_password"
+msgstr "Si vous avez oublié votre mot de passe, <a href='mail_password_form?userid=${member_id}'>cliquez ici</a>"

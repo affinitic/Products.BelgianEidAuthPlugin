@@ -1,0 +1,23 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2006-04-07 12:00-100\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Language-code: en\n"
+"Language-name: English\n"
+"Preferred-encodings: utf-8 latin1\n"
+"Domain: belgianeidauthplugin\n"
+"X-is-fallback-for: en-ca en-us\n"
+
+#choose_connection_mode
+msgid "welcome_after_connect"
+msgstr "Welcome, you are now logged in"
+
+msgid "help_after_connect_without_eid"
+msgstr "Connecting with your eID card can bring you more safety in a securised environement, <a href='http://eid.belgium.be' target='_blank'>for more informations click here.</a>"
+
+msgid "help_after_connect_with_eid"
+msgstr "You are connected with your eID card in securised mode."
+  
+msgid "help_about_password"
+msgstr "If you forget your manual login (username and password),<a href='mail_password_form?userid=${member_id}'>please click here.</a>"
+

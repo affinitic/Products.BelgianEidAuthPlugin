@@ -22,3 +22,4 @@ Modifications automatiques :
 
 Modifications manuelles :
 --> afin que l'utilisateur ne cherche pas après le lien "se connecter avec une carte eID" il vaut mieux enlever le portlet_login de left_slots et right_slots qui ne permet que la connexion username+password par défaut, ou alors, customizer le portlet_login pour lui adjoindre un lien "connexion eID"
+--> il FAUT appeler la template choose_connection_mode.pt lorsque l'utilisateur est connecté (dans tous les cas!).  L'utilisation du came_from semble suffisant.  Cette template appelle la gestion du rôle 'MemberWithEid'
