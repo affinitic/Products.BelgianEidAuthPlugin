@@ -44,33 +44,14 @@ Lorsque vous avez créé un compte, vous avez deux possibilités pour vous conne
 <tal:connected tal:condition="python:not isAnon">
 <h1 i18n:domain="belgianeidauthplugin" i18n:translate="welcome_after_connect">Welcome, you are now logged in</h1>
 
-<div tal:define="witheid context/roles_after_login">
+<div tal:define="witheid python:context.REQUEST.SESSION.has_key('eid_nr')">
 
 <tal:eid_enabled condition="witheid">
 <p i18n:domain="belgianeidauthplugin" i18n:translate="help_after_connect_with_eid">Your are now connected</p>
 
-
-
-
-
-
-
-
-
-
-
 <p i18n:domain="belgianeidauthplugin" i18n:translate="help_about_password">
 <span i18n:name="member_id" tal:replace="python:mtool.getAuthenticatedMember().getId()" />
 </p>
-
-
-
-
-
-
-
-
-
 
 </tal:eid_enabled>
 
