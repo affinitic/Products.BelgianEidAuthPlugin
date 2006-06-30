@@ -34,9 +34,7 @@ def manage_addBelgianEidAuthPlugin(dispatcher, id, title=None, REQUEST=None):
                             % dispatcher.absolute_url())
 
 class BelgianEidAuthPlugin(BasePlugin, Cacheable):
-
-    """ PAS plugin for using BelgianEid credentials to log in.
-    """
+    """ PAS plugin for using BelgianEid credentials to log in. """
 
     meta_type = 'BelgianEidAuthPlugin'
 
@@ -59,30 +57,33 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         """
         
         debug = False
-        print "BelgianEidAuthPlugin : debug mode is %s" % debug
+        #print "BelgianEidAuthPlugin : debug mode is %s" % debug
+        
+        mtool = getToolByName(self, 'portal_membership')
+        print mtool.isAnonymousUser()
         
         if debug:
             return "User", "user"
-        
+            
         if credentials.has_key('eid_from_http'):
             #we received something, the user is using his eID card, proceed
-            ptool = getToolByName(self, 'plone_utils', None)
-            normalized_login = ptool.normalizeString(credentials['eid_nr'])
+            self.REQUEST.SESSION.set('eid_from_http', credentials['eid_from_http'])
             
-            print self.REQUEST.SESSION
-            if self.REQUEST.SESSION.has_key('eid_nr'):
+            if self.REQUEST.SESSION.has_key('eid_username'):
                 #we already check in users if the actual user exist, we return it
                 #we return the user
+                print "return the already connected user"
                 return self.REQUEST.SESSION.get('eid_username'), self.REQUEST.SESSION.get('eid_username')
             else:
                 #lookup user national register in registered users
-                self.REQUEST.SESSION.set('eid_nr', credentials['eid_nr'])
-                user_name = self.getUserNameFromNR(self.REQUEST.SESSION.get('eid_nr'))
+                print "lookup user"
+                user_name = self.getUserNameFromNR(credentials['eid_nr'])
                 if user_name:
                     self.REQUEST.SESSION.set('eid_username', user_name)
                 #we will return None if the user has not be found in the database
                 return user_name, user_name
         else:
+            print "return None"
             return None
 
 
@@ -92,9 +93,13 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             Extract eid userinfo from request 
             These informations will be used by authenticateCredentials as it receive them as parameter
         """
-        if request.SESSION.has_key('eid_nr'):
+        #if the user try to connect using his eID card and that the getClientData has returned the 'eid_nr'
+        #we could suppose that we have eid_from_http but not 'eid_nr' altought it should not happen...
+        
+        creds = {}
+        
+        if request.SESSION.has_key('eid_from_http') and request.SESSION.has_key('eid_nr'):
             #we already parsed 'HTTP_SSL_CLIENT_S_DN', we use 'eid_name' stored in SESSION object
-            creds = {}
             creds.update({'eid_nr':request.SESSION.get('eid_nr'),
                           'eid_from_http':1})
             return creds
@@ -102,12 +107,13 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             #we play with 'HTTP_SSL_CLIENT_S_DN'
             from_http = request.get('HTTP_SSL_CLIENT_S_DN')
             if from_http:
+                #we search the national register number in the request send from Apache
                 nr = self.getClientData(from_http)
                 if nr:
-                    creds = {}
                     creds.update({'eid_nr':nr,
                                   'eid_from_http':1
                                 })
+                    self.REQUEST.SESSION.set('eid_nr', creds['eid_nr'])
                 return creds
             else:
                 #If we can not get this from the REQUEST, we are not in a correctly configured HTTPS mode
