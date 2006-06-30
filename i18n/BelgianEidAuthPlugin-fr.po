@@ -8,15 +8,46 @@ msgstr ""
 "Domain: belgianeidauthplugin\n"
 "X-is-fallback-for: fr-ca fr-be fr-fr\n"
 
-#choose_connection_mode
+#choose_connection_mode.pt
+msgid "connect_eid_sign_in"
+msgstr "Veuillez vous identifier en utilisant votre nom d'utilisateur et votre mot de passe ou votre carte d'identité électronique."
+
+msgid "connect_eid_more"
+msgstr "Si vous souhaitez obtenir plus d'informations sur la connexion par carte d'identité électronique, <a href='http://eid.belgium.be'>visitez le portail fédéral</a>"
+
+msgid "connect_eid_desc"
+msgstr "Lorsque vous avez créé un compte, vous avez deux possibilités pour vous connecter :"
+
+msgid "connect_eid_with_passwd"
+msgstr "Nom d'utilisateur et mot de passe"
+
+msgid "connect_eid_with_eid"
+msgstr "Carte d'identité électronique"
+
+msgid "connect_eid_insertandclick"
+msgstr "Insérez votre carte dans votre lecteur <a href='https://sambrep/ssl/logged_in?came_from=choose_connection_mode'>et cliquez ici pour vous connecter</a>"
+
 msgid "welcome_after_connect"
 msgstr "Bienvenue, vous êtes bien connecté"
 
 msgid "help_after_connect_without_eid"
-msgstr "Pour profiter de l'authentification sécurisée, n'hésitez pas à vous connecter à l'aide de votre carte d'identité électronique.  Pour plus d'informations concernant l'authentification par carte d'identité électronique, <a href='http://eid.belgium.be' target='_blank'>cliquez ici.</a>"
+msgstr "Pour profiter de l'authentification sécurisée, n'hésitez pas à vous connecter à l'aide de votre carte d'identité électronique.  Pour plus d'informations concernant l'authentification par carte d'identité électronique, <a href='http://eid.belgium.be' target='_blank'>visitez le site fédéral http://eid.belgium.be</a>"
 
 msgid "help_after_connect_with_eid"
 msgstr "Vous êtes connecté en mode sécurisé à l'aide de votre carte d'identité électronique.  Vous aurez dès lors accès à tous les services nécessitant une connexion sécurisée.  Afin de continuer à profiter de cette connexion sécurisée, continuez à vous connecter dorénavant à l'aide de votre carte d'identité électronique.  Si vous n'avez plus la possibilité de vous connecter à l'aide de votre carte d'identité électronique (perte, oubli, ...) vous aurez toujours la possibilité de vous connecter à l'aide du 'Nom d'utilisateur' et du 'Mot de passe' que vous avez choisi lors de la création de votre compte."
   
 msgid "help_about_password"
 msgstr "Si vous avez oublié votre mot de passe, <a href='mail_password_form?userid=${member_id}'>cliquez ici</a>"
+
+#login_eid_failed.pt
+msgid "description_failed_eid_introduce"
+msgstr "Vous essayez de vous connecter à l'aide de votre carte d'identité électronique mais la connexion est refusée.  Vérifiez ci-dessous si vous pouvez en trouver la cause."
+
+msgid "description_failed_eid_subscribe"
+msgstr "Vous ne vous êtes pas inscris au site.  Si c'est le cas, <a href='join_form'> inscrivez-vous</a>"
+
+msgid "description_failed_eid_certificate"
+msgstr "Vous n'avez pas accepté le certificat que votre navigateur Internet vous a proposé.  Si c'est le cas, vous devez fermer votre navigateur et recommencer la connexion en acceptant le certificat"
+
+msgid "description_failed_eid_contact"
+msgstr "Si malgré tout vous ne parvenez pas à vous connecter, <a href='contact-info'>contactez-nous</a>"

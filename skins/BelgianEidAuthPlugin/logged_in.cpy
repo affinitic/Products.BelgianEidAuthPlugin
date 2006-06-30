@@ -18,9 +18,21 @@ if REQUEST.get('__cp', None) is not None:
 
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
-    REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    context.plone_utils.addPortalMessage(_(u'Login failed'))
-    return state.set(status='failure')
+#manage our own failure_eid
+#beginning patch -->    
+    if context.REQUEST.SESSION.has_key('eid_from_http'):
+        #connection with an eid card failure
+        #it seems that the user is not subscribed ?
+        return state.set(status='failure_eid')
+    else:
+        REQUEST.RESPONSE.expireCookie('__ac', path='/')
+        context.plone_utils.addPortalMessage(_(u'Login failed'))
+        return state.set(status='failure')
+    
+#    REQUEST.RESPONSE.expireCookie('__ac', path='/')
+#    context.plone_utils.addPortalMessage(_(u'Login failed'))
+#    return state.set(status='failure')
+#<-- end of patch
 
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', '2000/01/01')
@@ -40,9 +52,13 @@ membership_tool.createMemberArea()
 
 #code above come from Plone
 #if user is logged with his eID card, we add him a role called MemberWithEid
+#a user is known as logged with his eID card when eid_username exist in the SESSION object
 #beginning patch -->
 
-if context.REQUEST.SESSION.has_key('eid_nr'):
+#we use the key 'eid_username', because 'eid_from_http' does not mean that the user is connected, but mean that the user try to connect...
+#'eid_username' = logged user, eid_from_http could cause breakage if user try to connect with his eID card, is not subscribed and try after to connect using his username and password, we MUST make sure that he do not receive the MemberWithEid role !!!
+
+if context.REQUEST.SESSION.has_key('eid_username'):
     context.acl_users.portal_role_manager.assignRoleToPrincipal('MemberWithEid', member.getId())
 else:
     context.acl_users.portal_role_manager.removeRoleFromPrincipal('MemberWithEid', member.getId())

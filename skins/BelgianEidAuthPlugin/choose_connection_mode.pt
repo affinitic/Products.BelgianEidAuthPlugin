@@ -9,8 +9,8 @@
 <tal:ask_connection_mode tal:condition="python: isAnon">
 <h1>Choisissez votre mode de connexion</h1>
 
-<p i18n:translate="description_sign_in">
-To access this part of the site, you need to log in with your user name and password.
+<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_sign_in">
+To access this part of the site, you need to log in with your user name and password or with your eID card.
 </p>
 
 <p i18n:translate="description_no_account"
@@ -28,23 +28,92 @@ If you do not have an account here, head over to the
 to become a member.
 
 </p>
+<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_desc">When you have subscribed, you have two possibilities to connect :</p>
 
-Lorsque vous avez créé un compte, vous avez deux possibilités pour vous connecter :
-<ul>
-<li>A l'aide du nom d'utilisateur et du mot de passe qui vous ont été envoyés par e-mail, <a href="login_form">cliquez ici pour accéder au formulaire de connexion</a>
-</li>
+<fieldset><legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_passwd">Using the username and password you received by mail</strong></legend>
+<div tal:define="auth nocall:here/acl_users/credentials_cookie_auth|nothing;
+                 ac_name auth/name_cookie|string:__ac_name;
+                 ac_password auth/pw_cookie|string:__ac_password;
+                 ac_persist auth/persist_cookie|nothing;
+                 join python:[a['url'] for a in actions['user'] if a['id']=='join'];
+                 canRegister python:test(join and hasattr(here,'portal_registration') and checkPermission('Add portal member', here), 1, 0);
+                 canRequestPassword python:checkPermission('Mail forgotten password', here)"
+     >
+        
+        <form action="login_form"
+              name="loginform"
+              method="post"
+              tal:attributes="action string:${portal_url}/login_form">
+
+            <input type="hidden" name="form.submitted" value="1" />
+            <input type="hidden" name="came_from" value=""
+                   tal:attributes="value context/@@plone/getCurrentUrl" />
+            <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
+            <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
+            <input type="hidden" name="login_name" id="login_name" value="" />
+            <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
+
+            <div class="field">
+                <label for=""
+                       tal:attributes="for ac_name"
+                       i18n:translate="label_login_name">Login Name</label>
+                <br />
+                <input type="text"
+                       size="10"
+                       alt="Login Name"
+                       onclick="showCookieMessage('cookies_message')"
+                       tal:attributes="name ac_name; id ac_name;
+                                       value python:request.get(ac_name, '');
+                                       tabindex tabindex/next"
+                       i18n:attributes="alt label_login_name;"/>
+            </div>
+            
+            <div class="field">
+                <label for=""
+                       tal:attributes="for ac_password"
+                       i18n:translate="label_password">Password</label>
+                <br />
+                <input type="password"
+                       size="10"
+                       alt="Password"
+                       onclick="showCookieMessage('cookies_message')"
+                       tal:attributes="name ac_password; id ac_password;
+                                       tabindex tabindex/next;"
+                       i18n:attributes="alt label_password;"/>
+            </div>
+
+            <div id="cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
+                Cookies are not enabled. You must <span i18n:name="enable_cookies">
+                <a href="enabling_cookies" i18n:translate="label_enable_cookies">enable cookies</a></span> before you can log in.
+            </div>
+            
+            <div class="formControls">
+            
+                <input class="context"
+                       type="submit"
+                       name="submit"
+                       value="Log in"
+                       alt="Log in"
+                       tal:attributes="tabindex tabindex/next;
+                                  onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
+                       i18n:attributes="value label_log_in; alt label_log_in;"/>
+            </div>
+        </form>
+</div></fieldset>
 <!-- We redirect to logged_in because we need the MemberArea to be created !!! -->
-<li>A l'aide de votre carte d'identité électronique, insérez-la dans votre lecteur de carte et <a href="https://sambrep/ssl/logged_in?came_from=choose_connection_mode">cliquez ici pour vous connecter</a>
-</li>
-</ul>
+<fieldset style="margin-bottom: 5em ;">
+<legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_eid">Using your eid card</strong></legend>
+<img src="chip.gif" />
+<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick"><a href="https://sambrep/ssl/logged_in?came_from=choose_connection_mode">Insert your card in the card reader and click here to connect</a></p>
+</fieldset>
 
-<p>Si vous souhaitez obtenir des informations concernant la connexion par carte d'identité électronique, <a href="">cliquez ici</a>
-
+<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_more">If you wish to read more about eID connection, <a href="http://eid.belgium.be">visit the federal portal</a></p>
 </tal:ask_connection_mode>
+
 <tal:connected tal:condition="python:not isAnon">
 <h1 i18n:domain="belgianeidauthplugin" i18n:translate="welcome_after_connect">Welcome, you are now logged in</h1>
 
-<div tal:define="witheid python:context.REQUEST.SESSION.has_key('eid_nr')">
+<div tal:define="witheid python:context.REQUEST.SESSION.has_key('eid_username')">
 
 <tal:eid_enabled condition="witheid">
 <p i18n:domain="belgianeidauthplugin" i18n:translate="help_after_connect_with_eid">Your are now connected</p>
