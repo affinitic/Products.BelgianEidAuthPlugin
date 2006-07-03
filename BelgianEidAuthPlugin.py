@@ -54,13 +54,12 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             See IAuthenticationPlugin.
             o We expect the credentials to be those returned by ILoginPasswordExtractionPlugin.
             o We do not need a password if we receive can access data in the REQUEST
+            
+            XXX We should not use the lookup if we receive valid HTTPS credentials and the user has not been found once, because the user could connect using his username/passwd and we could check to many times
         """
         
         debug = False
         #print "BelgianEidAuthPlugin : debug mode is %s" % debug
-        
-        mtool = getToolByName(self, 'portal_membership')
-        print mtool.isAnonymousUser()
         
         if debug:
             return "User", "user"
@@ -99,7 +98,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         creds = {}
         
         if request.SESSION.has_key('eid_from_http') and request.SESSION.has_key('eid_nr'):
-            #we already parsed 'HTTP_SSL_CLIENT_S_DN', we use 'eid_name' stored in SESSION object
+            #we already parsed 'HTTP_SSL_CLIENT_S_DN', we use 'eid_nr' stored in SESSION object
             creds.update({'eid_nr':request.SESSION.get('eid_nr'),
                           'eid_from_http':1})
             return creds
@@ -114,7 +113,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                                   'eid_from_http':1
                                 })
                     self.REQUEST.SESSION.set('eid_nr', creds['eid_nr'])
-                return creds
+                    return creds
             else:
                 #If we can not get this from the REQUEST, we are not in a correctly configured HTTPS mode
                 return None

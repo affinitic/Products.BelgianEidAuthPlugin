@@ -11,7 +11,7 @@ registerDirectory('skins', globals())
 registerDirectory('skins/BelgianEidAuthPlugin', globals())
 
 def initialize(context):
-    """ Initialize the GMailAuthPlugin """
+    """ Initialize the BelgianEidAuthPlugin """
     
     registerMultiPlugin(BelgianEidAuthPlugin.meta_type)
     
