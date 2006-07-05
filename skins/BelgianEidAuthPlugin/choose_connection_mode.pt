@@ -104,7 +104,7 @@ to become a member.
 <fieldset style="margin-bottom: 5em ;">
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_eid">Using your eid card</strong></legend>
 <img src="chip.gif" />
-<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick"><a href="https://sambrep/ssl/logged_in?came_from=choose_connection_mode">Insert your card in the card reader and click here to connect</a></p>
+<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick"><a href="https://19.48.0.199/ssl/logged_in?came_from=choose_connection_mode">Insert your card in the card reader and click here to connect</a></p>
 </fieldset>
 
 <p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_more">If you wish to read more about eID connection, <a href="http://eid.belgium.be">visit the federal portal</a></p>
