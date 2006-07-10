@@ -10,7 +10,9 @@ Attention, ce plugin nécessite PluggableAuthService version 1.2 (non testé ave
 
 --> Copier le produit dans le répertoire 'Products' d'une instance Zope
 --> Dans la ZMi, aller dans acl_users et ajouter un BelgianEidCardPlugin
---> Activer le plugin dans plugins/Authentication Plugins
+--> Activer le plugin 
+    --> Cliquer sur le plgun créé et sélectionner toutes les fonctionnalités proposées (Authentication et Extraction)
+    --> Cliquer sur update
 
 --> Par défault, le produit CPDescriptive n'est pas requis "d'office", mais il est fortement recommandé de l'installer si on ne souhaite pas faire de manipulations manuelles supplémentaires
 

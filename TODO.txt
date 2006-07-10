@@ -1,14 +1,11 @@
-* tests !!!
-
-* this is an alpha version so :
---> check if the user exist, if not, do not connect (we can connect with a not existing user...)
---> if the user does not exist, we do not connect him, but maybe we should give the possibility to add the user if we receive his certificate and the user is not subscribed yet ?
+--> tests !!!
+--> if the user does not exist, we do not connect him, but maybe we should give the possibility to add the user if we receive his certificate and the user is not subscribed yet ? So, subscribe a user with eID ?  Retrieve data from card using a Java applet ?
 --> how to add properties to a user ?  Still use portal_memberdata ?
---> verify SESSION object when disconnect, need to call resetCredentials ???
+--> save the https address on the plugin, not in templates/i18n
 
 HISTORY :
 =========
-0.1 Beta1
+0.1 Alpha2
 --> Connection based on national register number :
 	--> connection is available manually (username+passwd) and with eID card
 	--> connect user with eID if subscribed (lookup national register number)
