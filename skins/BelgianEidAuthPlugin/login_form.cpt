@@ -61,14 +61,13 @@ If you do not have an account here, head over to the
 <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
     While cookie authentication is disabled, cookie-based login is not available.
 </div>
-<br><br>
+<br>
 <strong><p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_desc">When you have subscribed, you have two possibilities to connect :</p></strong>
 
 <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
       method="post"
       id="login_form"
       tal:condition="python:auth">
-
       <fieldset>
        <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_passwd">Using the username and password you received by mail</strong></legend>
         <input type="hidden"
@@ -174,15 +173,11 @@ If you do not have an account here, head over to the
     </fieldset>
 
 </form>
-
 <fieldset style="margin-bottom: 5em ;">
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_eid">Using your eid card</strong></legend>
 <img src="chip.gif" />
-<span i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick">Insert your card in the card reader and <tal:https_address i18n:name="https_address" tal:content="python: context.portal_properties.site_properties.getProperty('https_address')" /><a href="" tal:attributes="href python: context.portal_properties.site_properties.getProperty('https_address')">click here to connect</a></span>
+<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick">Insert your card in the card reader and <tal:https_address i18n:name="https_address" tal:content="python: context.portal_properties.site_properties.getProperty('https_address')" /><a href="" tal:attributes="href python: context.portal_properties.site_properties.getProperty('https_address')">click here to connect</a></p>
 </fieldset>
-<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_more">If you wish to read more about eID connection, <a href="http://eid.belgium.be">visit the federal portal</a></p>
-
-
 </div>
 
 </body>
