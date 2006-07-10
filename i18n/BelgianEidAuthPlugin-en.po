@@ -21,3 +21,5 @@ msgstr "You are connected with your eID card in securised mode."
 msgid "help_about_password"
 msgstr "If you forget your manual login (username and password),<a href='mail_password_form?userid=${member_id}'>please click here.</a>"
 
+msgid "connect_eid_insertandclick"
+msgstr "Insert your card in the card reader and <a href='$https_address'>click here to connect</a>"

@@ -25,7 +25,7 @@ msgid "connect_eid_with_eid"
 msgstr "Carte d'identité électronique"
 
 msgid "connect_eid_insertandclick"
-msgstr "Insérez votre carte dans votre lecteur et <a href='https://19.48.0.199/ssl/logged_in?came_from=choose_connection_mode'>cliquez ici pour vous connecter</a>"
+msgstr "Insérez votre carte dans votre lecteur et <a href='$https_address'>cliquez ici pour vous connecter</a>"
 
 msgid "welcome_after_connect"
 msgstr "Bienvenue, vous êtes bien connecté"
