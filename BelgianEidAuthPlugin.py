@@ -25,8 +25,6 @@ def manage_addBelgianEidAuthPlugin(dispatcher, id, title=None, REQUEST=None):
 
     obj = BelgianEidAuthPlugin(id, title)
     
-    obj.manage_addProperty('https_address', '', 'string')
-    
     dispatcher._setObject(obj.getId(), obj)
 
     if REQUEST is not None:
