@@ -26,22 +26,22 @@ def install(self):
     #but this is to restrictive so we just show in doc how to do it
     #Update action linked to the "connect" link
     #change "login_form" to "choose_connection_mode"
-    mtool = getToolByName(self, "portal_membership", None)
-    #we remove the "join" action and we add another one
-    if mtool:
-        actions = mtool._actions
-        filtered = [action for action in actions if action.id != "login"]
-        if len(actions) != len(filtered):
-            mtool._actions = tuple(filtered)
-            mtool.addAction(id="login",
-                            name="Log in",
-                            action="string:${portal_url}/choose_connection_mode",
-                            condition="not: member",
-                            permission="View",
-                            category="user",
-                            visible=1,
-                            REQUEST=None
-                        )
+#     mtool = getToolByName(self, "portal_membership", None)
+#     #we remove the "join" action and we add another one
+#     if mtool:
+#         actions = mtool._actions
+#         filtered = [action for action in actions if action.id != "login"]
+#         if len(actions) != len(filtered):
+#             mtool._actions = tuple(filtered)
+#             mtool.addAction(id="login",
+#                             name="Log in",
+#                             action="string:${portal_url}/choose_connection_mode",
+#                             condition="not: member",
+#                             permission="View",
+#                             category="user",
+#                             visible=1,
+#                             REQUEST=None
+#                         )
     
     # Now we need to go through the skin configurations and insert
     # directory_name into the configurations.  Preferably, this
@@ -64,6 +64,11 @@ def install(self):
             out.write("Skipping %s skin, %s is already set up\n" % (
                 skin, directory_name))
     
+    
+    #we add a property called https_address to site_properties
+    portal = getToolByName(self, 'portal_url').getPortalObject()
+    if not portal.portal_properties.site_properties.hasProperty('https_address'):
+        portal.portal_properties.site_properties.manage_addProperty('https_address', 'https://localhost:8080/change_this_https_address', 'string')
     
     #Add the MemberWithEid role to PAS if no exist
     if HAS_PLONEPAS:
