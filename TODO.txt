@@ -1,7 +1,7 @@
 --> tests !!!
 --> if the user does not exist, we do not connect him, but maybe we should give the possibility to add the user if we receive his certificate and the user is not subscribed yet ? So, subscribe a user with eID ?  Retrieve data from card using a Java applet ?
 --> how to add properties to a user ?  Still use portal_memberdata ?
---> save the https address on the plugin, not in templates/i18n
+--> save the https address in a property of the template, not hardcoded in template/i18n
 
 HISTORY :
 =========

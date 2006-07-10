@@ -24,6 +24,9 @@ def manage_addBelgianEidAuthPlugin(dispatcher, id, title=None, REQUEST=None):
     """ Add a BelgianEidAuthPlugin to a Pluggable Auth Service. """
 
     obj = BelgianEidAuthPlugin(id, title)
+    
+    obj.manage_addProperty('https_address', '', 'string')
+    
     dispatcher._setObject(obj.getId(), obj)
 
     if REQUEST is not None:
@@ -39,7 +42,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
     meta_type = 'BelgianEidAuthPlugin'
 
     security = ClassSecurityInfo()
-
+    
     def __init__(self, id, title=None):
         self._id = self.id = id
         self.title = title
