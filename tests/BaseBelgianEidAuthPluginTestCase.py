@@ -41,6 +41,7 @@ from sets import Set
 from Testing import ZopeTestCase
 from Products.PloneTestCase import PloneTestCase
 from Products.BelgianEidAuthPlugin.config import HAS_PLONEPAS
+from Products.Archetypes.tests.utils import DummySessionDataManager
 
 # Add common dependencies
 if not HAS_PLONEPAS:
@@ -80,6 +81,11 @@ class BaseBelgianEidAuthPluginTestCase(testcase):
         uf.userFolderAddUser('admin', 'admin', ['Manager', 'Member', ], [])
         uf.userFolderAddUser('anon', 'anon', ['Anonymous', ], [])
         self.wft = self.portal.portal_workflow
+        request = self.app.REQUEST
+        self.app._setObject('session_data_manager', DummySessionDataManager())
+        sdm = self.app.session_data_manager
+        request.set('SESSION', sdm.getSessionData())
+        
 
     def checkActionList(self, object, actions):
         """ Compare un set d'action de sorte que ['corriger', 'attendre'] soit egal a ['attendre', 'corriger'] """
