@@ -12,7 +12,7 @@ from Products.PluggableAuthService.utils import classImplements
 from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
 from Products.PluggableAuthService.interfaces.plugins import IExtractionPlugin
 
-from zLOG import LOG
+from zLOG import LOG, PROBLEM
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 from Products.CMFCore.utils import getToolByName
@@ -58,7 +58,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             
             XXX We should not use the lookup if we receive valid HTTPS credentials and the user has not been found once, because the user could connect using his username/passwd and we could check to many times
         """
-        
+        print "credentials = ", credentials
         debug = False
         #print "BelgianEidAuthPlugin : debug mode is %s" % debug
         
@@ -67,7 +67,6 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             
         if credentials.has_key('eid_from_http'):
             #we received something, the user is using his eID card, proceed
-            self.REQUEST.SESSION.set('eid_from_http', credentials['eid_from_http'])
             
             if self.REQUEST.SESSION.has_key('eid_username'):
                 #we already check in users if the actual user exist, we return it
@@ -80,9 +79,11 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                 user_name = self.getUserNameFromNR(credentials['eid_nr'])
                 if user_name:
                     self.REQUEST.SESSION.set('eid_username', user_name)
+                    return user_name, user_name                    
                 #we will return None if the user has not be found in the database
-                return user_name, user_name
+                return None
         else:
+            #if credentials is not None, it means that extractCredentials returned something without the 'eid_from_http' key, it should not happen...
             print "return None"
             return None
 
@@ -97,12 +98,20 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         #we could suppose that we have eid_from_http but not 'eid_nr' altought it should not happen...
         
         creds = {}
+        #we know that we have already extracted the credentials only if :
+        #--> 'eid_from_http' is set in SESSION --> we have already encountered the HTTPS support
+        #--> 'eid_nr' is set in SESSION --> we have successfully extracted nr from 'HTTP_SSL_CLIENT_S_DN' with the getClientData method
+        #--> 'HTTP_SSL_CLIENT_S_DN' is in the REQUEST --> Apache still send the SSL var
+        #--> 'HTTP_SSL_CLIENT_S_DN' in REQUEST is equal to 'eid_http_ssl_client_s_dn' in SESSION wich means that the user as not changed
         
-        if request.SESSION.has_key('eid_from_http') and request.SESSION.has_key('eid_nr'):
-            #we already parsed 'HTTP_SSL_CLIENT_S_DN', we use 'eid_nr' stored in SESSION object
-            creds.update({'eid_nr':request.SESSION.get('eid_nr'),
-                          'eid_from_http':1})
-            return creds
+        if request.SESSION.has_key('eid_from_http') and request.get('HTTP_SSL_CLIENT_S_DN') and request.get('HTTP_SSL_CLIENT_S_DN') == request.SESSION.get('eid_http_ssl_client_s_dn'):
+                #we still check if 'HTTP_SSL_CLIENT_S_DN' is in the REQUEST because Apache could remove it
+                #we already parsed 'HTTP_SSL_CLIENT_S_DN', we use 'eid_nr' stored in SESSION object
+                #as we just manage cached vars in SESSION, we do not need delete 'eid_username' from SESSION
+                creds.update({'eid_nr':request.SESSION.get('eid_nr'),
+                            'eid_from_http':1,
+                            'eid_http_ssl_client_s_dn': request.get('HTTP_SSL_CLIENT_S_DN')})
+                return creds
         else:
             #we play with 'HTTP_SSL_CLIENT_S_DN'
             from_http = request.get('HTTP_SSL_CLIENT_S_DN')
@@ -111,13 +120,40 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                 nr = self.getClientData(from_http)
                 if nr:
                     creds.update({'eid_nr':nr,
-                                  'eid_from_http':1
+                                  'eid_from_http':1,
+                                  'eid_http_ssl_client_s_dn': from_http
                                 })
-                    self.REQUEST.SESSION.set('eid_nr', creds['eid_nr'])
+                    request.SESSION.set('eid_nr', creds['eid_nr'])
+                    request.SESSION.set('eid_from_http', creds['eid_from_http'])
+                    #we save the 'HTTP_SSL_CLIENT_S_DN' in the SESSION to see if it is always the same send by Apache
+                    request.SESSION.set('eid_http_ssl_client_s_dn', creds['eid_http_ssl_client_s_dn'])
+                    #we try to remove 'eid_username' from SESSION to force AuthenticateCredentials to do the authentication again if it had already been done
+                    try:
+                        del request.SESSION['eid_username']
+                    except KeyError:
+                        pass
                     return creds
+                else:
+                    creds.update({'eid_from_http':0})
             else:
-                #If we can not get this from the REQUEST, we are not in a correctly configured HTTPS mode
-                return None
+                creds.update({'eid_from_http':0})
+                    
+        #If we can not get this from the REQUEST, we are not in a correctly configured HTTPS mode
+        #we remove the keys from SESSION !!!
+        #--> 'eid_from_http' in creds == 0 if from_hhtp is None or if nr returned by getClientData is None
+        
+        #XXX performance problem at trying to delete the keys from SESSION when not using eID card???  The plugin will always do this try/catch...
+        if creds['eid_from_http'] == 0:
+            try:
+                del request.SESSION['eid_nr']
+                del request.SESSION['eid_from_http']
+                del request.SESSION['eid_http_ssl_client_s_dn']
+                del request.SESSION['eid_username']
+            except KeyError:
+                #if 'eid_nr' or 'eid_from_hhtp' or 'eid_http_ssl_client_s_dn' or 'eid_username' does not exist in SESSION, we pass, they already have been deleted
+                pass
+        
+        return None
         
 
     security.declarePrivate('getClientData')
@@ -128,18 +164,28 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         #there can be UTF/ISO encoding problems with OpenSSL/Apache, so we do what we have to to correct this
         #UTF-8 codes are not passed as codes but as string
         #"é" should be '\xc3\xa9' but it is returned as '\\xc3\\xa9'
+        nr = None
+        
         try:
-            corrected_string = eval("u'" + from_http + "'")
-            corrected_string = corrected_string.encode('latin1')
-            corrected_string = unicode(corrected_string, 'utf-8')
-            datas = corrected_string.split('/')
+            #we need to correct the string if we wish to retrieve CN/SN/GN datas from fro_http
+            #corrected_string = eval("u'" + from_http + "'")
+            #corrected_string = corrected_string.encode('latin1')
+            #corrected_string = unicode(corrected_string, 'utf-8')
+            #datas = corrected_string.split('/')
+            
+            datas = from_http.split('/')
             #search for SN, GN and serialNumber
             for data in datas:
                 if data[:12] == "serialNumber":
                     nr = data[13:]
-     
-        except Error:
+            #a belgian national register number is 11 digits long
+            if len(nr) != 11:
+                nr = None
+
+        except:
             #if we encoutered an error doing this, we have to stop here
+            #we should not have errors here, so we LOG
+            LOG("BelgianEidAuthPlugin :", PROBLEM, "Failed to extract datas from from_http in getClientData(self, from_http).")
             return None
         
         return nr
@@ -152,8 +198,13 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         """
         for user in self.acl_users.getUsers():
             props = self.acl_users.mutable_properties.getPropertiesForUser(user)._properties
-            if props['nationalregister'] == nr:
-                return user.getId()
+            
+            #the property 'nationalregister' could not exist, so we try and catch
+            try:
+                if props['nationalregister'] == nr:
+                    return user.getId()
+            except KeyError:
+                pass
         
         return None
 
