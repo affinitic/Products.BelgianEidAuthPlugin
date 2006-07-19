@@ -23,3 +23,6 @@ msgstr "If you forget your manual login (username and password),<a href='mail_pa
 
 msgid "connect_eid_insertandclick"
 msgstr "Insert your card in the card reader and <a href='$https_address'>click here to connect</a>"
+
+msgid "connect_eid_button"
+msgstr "Click the button to conect with your eID card"

@@ -4,7 +4,7 @@
     tal:replace="structure here/manage_form_title">Form Title</h2>
 
 <p class="form-help">
-The BelgianEidAuthPlugin lets any belgian user who possess an eID card to log in
+The BelgianEidAuthPlugin manage authentication through a Belgian eID card 
 </p>
 
 <form action="manage_addBelgianEidAuthPlugin" method="post">

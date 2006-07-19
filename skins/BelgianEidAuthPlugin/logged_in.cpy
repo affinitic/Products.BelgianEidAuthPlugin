@@ -23,6 +23,7 @@ if membership_tool.isAnonymousUser():
     if context.REQUEST.SESSION.has_key('eid_from_http'):
         #connection with an eid card failure
         #it seems that the user is not subscribed ?
+        context.plone_utils.addPortalMessage(_(u'Login failed'))        
         return state.set(status='failure_eid')
     else:
         REQUEST.RESPONSE.expireCookie('__ac', path='/')

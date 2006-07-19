@@ -68,7 +68,7 @@ def install(self):
     #we add a property called https_address to site_properties
     portal = getToolByName(self, 'portal_url').getPortalObject()
     if not portal.portal_properties.site_properties.hasProperty('https_address'):
-        portal.portal_properties.site_properties.manage_addProperty('https_address', 'https://localhost:8080/change_this_https_address', 'string')
+        portal.portal_properties.site_properties.manage_addProperty('https_address', 'https://change_this_url_but_not_the_extension/logged_in', 'string')
     
     #Add the MemberWithEid role to PAS if no exist
     if HAS_PLONEPAS:

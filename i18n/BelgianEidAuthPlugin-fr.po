@@ -27,6 +27,9 @@ msgstr "Carte d'identité électronique"
 msgid "connect_eid_insertandclick"
 msgstr "Insérez votre carte dans votre lecteur et <a href='$https_address'>cliquez ici pour vous connecter</a>"
 
+msgid "connect_eid_button"
+msgstr "Cliquez sur le bouton ci-dessous pour vous connecter avec votre carte d'identité électronique."
+
 msgid "welcome_after_connect"
 msgstr "Bienvenue, vous êtes bien connecté"
 
