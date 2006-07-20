@@ -77,7 +77,8 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                 #see login_next.cpy from CMFPlone for more informations
                 if not self.REQUEST.SESSION.has_key('eid_logged_in_executed'):
                     self.REQUEST.SESSION.set('eid_logged_in_executed', 1)
-                    self.REQUEST.RESPONSE.redirect('https://sambrep/ssl/logged_in?came_from=%s' % self.REQUEST.get('URL'))
+                    portal = getToolByName(self, 'portal_url').getPortalObject()
+                    self.REQUEST.RESPONSE.redirect(portal.portal_properties.site_properties.getProperty('https_address') + '?came_from=%s' % self.REQUEST.get('URL'))
                 return self.REQUEST.SESSION.get('eid_username'), self.REQUEST.SESSION.get('eid_username')
             else:
                 #lookup user national register in registered users
@@ -98,7 +99,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                                 
                         if redirectable:
                             self.REQUEST.SESSION.set('eid_logged_in_executed', 1)                                
-                            self.REQUEST.RESPONSE.redirect('https://sambrep/ssl/logged_in?came_from=%s' % self.REQUEST.get('URL'))
+                            self.REQUEST.RESPONSE.redirect(portal.portal_properties.site_properties.getProperty('https_address') + '?came_from=%s' % self.REQUEST.get('URL'))
                     
                     self.REQUEST.SESSION.set('eid_username', user_name)
                     return user_name, user_name                    
