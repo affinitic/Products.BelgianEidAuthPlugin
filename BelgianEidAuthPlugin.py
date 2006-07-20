@@ -58,7 +58,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             
             XXX We should not use the lookup if we receive valid HTTPS credentials and the user has not been found once, because the user could connect using his username/passwd and we could check to many times
         """
-        print "credentials = ", credentials
+        #print "credentials = ", credentials
         debug = False
         #print "BelgianEidAuthPlugin : debug mode is %s" % debug
         
@@ -72,14 +72,37 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                 #we already check in users if the actual user exist, we return it
                 #we return the user
                 print "return the already connected user"
+                #if we come from logged_out, login_success, ... we need to call the logged_in script
+                #these URL are not redirected by login_next
+                #see login_next.cpy from CMFPlone for more informations
+                if not self.REQUEST.SESSION.has_key('eid_logged_in_executed'):
+                    self.REQUEST.SESSION.set('eid_logged_in_executed', 1)
+                    self.REQUEST.RESPONSE.redirect('https://sambrep/ssl/logged_in?came_from=%s' % self.REQUEST.get('URL'))
                 return self.REQUEST.SESSION.get('eid_username'), self.REQUEST.SESSION.get('eid_username')
             else:
                 #lookup user national register in registered users
                 print "lookup user"
                 user_name = self.getUserNameFromNR(credentials['eid_nr'])
                 if user_name:
+                    #we force the redirection to logged_in to be sure that logged_in.cpy where we manage the MemberWithEid role is executed
+                    #we do not call logged_in here if the url is not redirectable (see login_next.cpy in CMFPlone)
+                    if not self.REQUEST.SESSION.has_key('eid_logged_in_executed'):
+                        not_redirectable_urls = ['login', 'login_success', 'login_password', 'login_failed',
+                                               'login_form', 'logged_in', 'logged_out', 'logout', 'registered',
+                                               'mail_password', 'mail_password_form', 'join_form',
+                                               'require_login', 'member_search_results'] 
+                        redirectable = True
+                        for not_redirectable_url in not_redirectable_urls:
+                            if not_redirectable_url in self.REQUEST.get('URL'):
+                                redirectable = False
+                                
+                        if redirectable:
+                            self.REQUEST.SESSION.set('eid_logged_in_executed', 1)                                
+                            self.REQUEST.RESPONSE.redirect('https://sambrep/ssl/logged_in?came_from=%s' % self.REQUEST.get('URL'))
+                    
                     self.REQUEST.SESSION.set('eid_username', user_name)
                     return user_name, user_name                    
+                
                 #we will return None if the user has not be found in the database
                 return None
         else:
