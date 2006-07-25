@@ -96,9 +96,11 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                         for not_redirectable_url in not_redirectable_urls:
                             if not_redirectable_url in self.REQUEST.get('URL'):
                                 redirectable = False
+                                break
                                 
                         if redirectable:
-                            self.REQUEST.SESSION.set('eid_logged_in_executed', 1)                                
+                            self.REQUEST.SESSION.set('eid_logged_in_executed', 1)
+                            portal = getToolByName(self, 'portal_url').getPortalObject()
                             self.REQUEST.RESPONSE.redirect(portal.portal_properties.site_properties.getProperty('https_address') + '?came_from=%s' % self.REQUEST.get('URL'))
                     
                     self.REQUEST.SESSION.set('eid_username', user_name)
@@ -202,10 +204,17 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             for data in datas:
                 if data[:12] == "serialNumber":
                     nr = data[13:]
-            #a belgian national register number is 11 digits long
-            if len(nr) != 11:
-                nr = None
 
+            #we check that there are 11 numbers left
+            if len(nr) != 11:
+                raise ValueError
+    
+            first_part = int(nr[0:9])
+            last_part = int(nr[9:11])
+    
+            #the two last digits is the result of 97 les the modulo by 97 of the 10 first digits
+            if last_part != (97 - (first_part%97)):
+                raise ValueError
         except:
             #if we encoutered an error doing this, we have to stop here
             #we should not have errors here, so we LOG
