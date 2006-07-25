@@ -88,14 +88,14 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         self.failIf(beap.extractCredentials(REQUEST))
         
         #--------------------> WITH HTTPS <--------------------
-        #we set 'HTTP_SSL_CLIENT_S_DN' to "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=12345678910"
-        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=12345678910")
+        #we set 'HTTP_SSL_CLIENT_S_DN' to "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070"
+        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070")
         self.failUnless('HTTP_SSL_CLIENT_S_DN' in str(REQUEST))
         
         #extractCredentials will return the creds
-        creds = ({'eid_nr': '12345678910',
+        creds = ({'eid_nr': '71715100070',
                   'eid_from_http': 1,
-                  'eid_http_ssl_client_s_dn': "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=12345678910"
+                  'eid_http_ssl_client_s_dn': "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070"
                  })
         #first time we extractCredentials, the credentials are set in SESSION
         self.assertEquals(beap.extractCredentials(REQUEST), creds)
@@ -107,7 +107,7 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
 
         #we check if we change the 'HTTP_SSL_CLIENT_S_DN' if the user is no more recongnized and the process of authentication start again
         old_creds = beap.extractCredentials(REQUEST)
-        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User2 Belgian2 (Authentication)/SN=Belgian2/GN=User2/serialNumber=00011122210")
+        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User2 Belgian2 (Authentication)/SN=Belgian2/GN=User2/serialNumber=71715100070")
         self.assertNotEquals(beap.extractCredentials(REQUEST), old_creds)
         
         #check if Apache remove the 'HTTP_SSL_CLIENT_S_DN' from the REQUEST
@@ -146,8 +146,8 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         self.failIf(beap.getClientData(from_http))
         
         #we check that a valid 'HTTP_SSL_CLIENT_S_DN' can be evaluated to return the serialNumber
-        from_http = "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=12345678910"
-        self.assertEquals(beap.getClientData(from_http), "12345678910")
+        from_http = "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070"
+        self.assertEquals(beap.getClientData(from_http), "71715100070")
 
 
     def testAuthenticateCredentials(self):
@@ -167,16 +167,16 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         self.failIf(beap.authenticateCredentials(credentials))
         
         #if the credentials returned by extractCredentials do not have the key 'eid_from_http', authenticateCredentials return None
-        credentials = ({'eid_nr': '12345678910'})
+        credentials = ({'eid_nr': '71715100070'})
         self.failIf(beap.authenticateCredentials(credentials))
         
         #--------------------> CREDENTIALS WITH 'eid_from_http' KEY <--------------------
         #--------------------> USER DOES NOT EXIST <--------------------
         #credentials is well formatted
         #but has not the 'eid_username' key
-        credentials = ({'eid_nr': '12345678910',
+        credentials = ({'eid_nr': '71715100070',
                   'eid_from_http': 1,
-                  'eid_http_ssl_client_s_dn': "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=12345678910"
+                  'eid_http_ssl_client_s_dn': "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070"
                  })
         #authenticateCredentials will look up the user
         #if the user does not exist, authenticateCredentials return None
@@ -192,7 +192,7 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         pr_tool = getToolByName(portal, 'portal_registration')
         pr_tool.addMember('user', '12345', properties={'username':'User',
                                                        'email':'user@user.be',
-                                                       'nationalregister':'12345678910'})
+                                                       'nationalregister':'71715100070'})
         #the user exist, authenticateCredentials must return this user
         self.assertEquals(beap.authenticateCredentials(credentials), ('user', 'user'))
         #if the user has been found, authenticateCredentials set 'eid_username' is SESSION
@@ -209,7 +209,7 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
         beap = portal.acl_users.beap
 
-        nr = "12345678910"
+        nr = "71715100070"
                 
         #--------------------> USER DOES NOT EXIST <--------------------
         #if the user does not exists, the method obviously return None but it work even if the 'nationalregister' property does not exist in portal_memberdata
@@ -223,7 +223,7 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         #addMember need id, password, and if we enter some properties, we have to specify the username and email too...
         pr_tool.addMember('user', '12345', properties={'username':'User',
                                                        'email':'user@user.be',
-                                                       'nationalregister':'12345678910'})
+                                                       'nationalregister':'71715100070'})
         #now it should work...
         self.assertEquals(beap.getUserNameFromNR(nr), "user")
 
@@ -231,6 +231,7 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
     def testExtractAndAuthenticateCredentials(self):
         """
          As extractCredentials and authenticateCredentials are linked, we have to test them together too...
+         What we have to test here is what is modified in extractCredentials and used in authenticateCredentials : the 'eid_username' key from SESSION
         """
         portal = self.portal
         REQUEST = portal.REQUEST
@@ -238,8 +239,102 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         #we add the plugin
         portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
         beap = portal.acl_users.beap
+        #we add the 'nationalregister' porperty in portal_memberdata
+        portal.portal_memberdata.manage_addProperty('nationalregister', '', 'string')
+        pr_tool = getToolByName(portal, 'portal_registration')
+        #we add a user with a valid 'nationalregister'
+        #addMember need id, password, and if we enter some properties, we have to specify the username and email too...
+        pr_tool.addMember('user', '12345', properties={'username':'User',
+                                                       'email':'user@user.be',
+                                                       'nationalregister':'71715100070'})
+
+        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070")
+        #we extract credentials ...
+        creds = beap.extractCredentials(REQUEST)
+        #... and the user must have been authenticated
+        self.assertEquals(beap.authenticateCredentials(creds), ('user', 'user'))
+        #the 'eid_username' key must be set in the SESSION
+        self.failUnless(SESSION.has_key('eid_username'))
+        
+        #if we change the 'HTTP_SSL_CLIENT_S_DN' (as Apache could do), the 'eid_username' key must have disappeared after extractCredentials but must be set after authenticateCredentials if the serialNumber is found in the users 'nr'
+        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User2 Belgian2 (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070")
+        
+        creds = beap.extractCredentials(REQUEST)
+        self.failIf(SESSION.has_key('eid_username'))
+        beap.authenticateCredentials(creds)
+        self.failUnless(SESSION.has_key('eid_username'))
+        
+        #if we change the 'HTTP_SSL_CLIENT_S_DN' AND the serialNumber is not found in the users 'nr', the 'eid_username' key can not be set in SESSION after extractCredentials and after authenticateCredentials
+        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User2 Belgian2 (Authentication)/SN=Belgian/GN=User/serialNumber=71715100169")
+        creds = beap.extractCredentials(REQUEST)
+        self.failIf(SESSION.has_key('eid_username'))
+        beap.authenticateCredentials(creds)
+        self.failIf(SESSION.has_key('eid_username'))
+        
+
+    def testLoggedInScriptExecutedWithNotRedirectableURL(self):
+        """
+         We want the logged_in.cpy script to be executed each time we connect (and only once)
+        """
+        portal = self.portal
+        REQUEST = portal.REQUEST
+        SESSION = portal.REQUEST.SESSION
+        #we add the plugin
+        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.beap
+        #we add the 'nationalregister' porperty in portal_memberdata
+        portal.portal_memberdata.manage_addProperty('nationalregister', '', 'string')
+        pr_tool = getToolByName(portal, 'portal_registration')
+        #we add a user with a valid 'nationalregister'
+        #addMember need id, password, and if we enter some properties, we have to specify the username and email too...
+        pr_tool.addMember('user', '12345', properties={'username':'User',
+                                                       'email':'user@user.be',
+                                                       'nationalregister':'71715100070'})
+
+        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070")
+        #'logged_out' will not be redirected by login_next
+        REQUEST.set('URL', "logged_out")
+        
+        creds = beap.extractCredentials(REQUEST)
+        #we verify that the logged_in.cpy script is executed if we are not using a not_redirectable_url
+        self.failIf(SESSION.has_key('eid_logged_in_executed'))
+        beap.authenticateCredentials(creds)
+        self.failIf(SESSION.has_key('eid_logged_in_executed'))
+        
+        #we put a redirectable URL in REQUEST/'URL'
+        REQUEST.set('URL', "redirectable_url")
+        beap.authenticateCredentials(creds)
+        self.failUnless(SESSION.has_key('eid_logged_in_executed'))
         
         
+    def testLoggedInScriptExecutedWithRedirectableURL(self):
+        """
+         We want the logged_in.cpy script to be executed each time we connect (and only once)
+        """
+        portal = self.portal
+        REQUEST = portal.REQUEST
+        SESSION = portal.REQUEST.SESSION
+        #we add the plugin
+        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.beap
+        #we add the 'nationalregister' porperty in portal_memberdata
+        portal.portal_memberdata.manage_addProperty('nationalregister', '', 'string')
+        pr_tool = getToolByName(portal, 'portal_registration')
+        #we add a user with a valid 'nationalregister'
+        #addMember need id, password, and if we enter some properties, we have to specify the username and email too...
+        pr_tool.addMember('user', '12345', properties={'username':'User',
+                                                       'email':'user@user.be',
+                                                       'nationalregister':'71715100070'})
+
+        REQUEST.set('HTTP_SSL_CLIENT_S_DN', "/C=BE/CN=User Belgian (Authentication)/SN=Belgian/GN=User/serialNumber=71715100070")
+        
+        creds = beap.extractCredentials(REQUEST)
+        #we verify that the logged_in.cpy script is executed if we are not using a not_redirectable_url
+        self.failIf(SESSION.has_key('eid_logged_in_executed'))
+        beap.authenticateCredentials(creds)
+        self.failUnless(SESSION.has_key('eid_logged_in_executed'))
+        
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
