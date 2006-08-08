@@ -35,7 +35,8 @@ from Products.PluggableAuthService.utils import classImplements
 from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
 from Products.PluggableAuthService.interfaces.plugins import IExtractionPlugin
 
-from zLOG import LOG, PROBLEM
+import logging
+#from zLOG import LOG, PROBLEM
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 from Products.CMFCore.utils import getToolByName
@@ -94,7 +95,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             if self.REQUEST.SESSION.has_key('eid_username'):
                 #we already check in users if the actual user exist, we return it
                 #we return the user
-                print "return the already connected user"
+                #print "return the already connected user"
                 #if we come from logged_out, login_success, ... we need to call the logged_in script
                 #these URL are not redirected by login_next
                 #see login_next.cpy from CMFPlone for more informations
@@ -105,7 +106,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                 return self.REQUEST.SESSION.get('eid_username'), self.REQUEST.SESSION.get('eid_username')
             else:
                 #lookup user national register in registered users
-                print "lookup user"
+                #print "lookup user"
                 user_name = self.getUserNameFromNR(credentials['eid_nr'])
                 if user_name:
                     #we force the redirection to logged_in to be sure that logged_in.cpy where we manage the MemberWithEid role is executed
@@ -133,7 +134,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                 return None
         else:
             #if credentials is not None, it means that extractCredentials returned something without the 'eid_from_http' key, it should not happen...
-            print "return None"
+            #print "return None"
             return None
 
 
@@ -241,7 +242,8 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         except:
             #if we encoutered an error doing this, we have to stop here
             #we should not have errors here, so we LOG
-            LOG("BelgianEidAuthPlugin :", PROBLEM, "Failed to extract datas from from_http in getClientData(self, from_http).")
+            logger = logging.getLogger('BelgianEidAuthPlugin')
+            logger.info("Failed to extract datas from from_http in getClientData(self, from_http).")
             return None
         
         return nr
