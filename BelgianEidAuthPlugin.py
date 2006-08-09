@@ -100,9 +100,10 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                 #these URL are not redirected by login_next
                 #see login_next.cpy from CMFPlone for more informations
                 if not self.REQUEST.SESSION.has_key('eid_logged_in_executed'):
+                    #print "executed in first if"
                     self.REQUEST.SESSION.set('eid_logged_in_executed', 1)
                     portal = getToolByName(self, 'portal_url').getPortalObject()
-                    self.REQUEST.RESPONSE.redirect(portal.portal_properties.site_properties.getProperty('https_address') + '?came_from=%s' % self.REQUEST.get('URL'))
+                    self.REQUEST.RESPONSE.redirect(portal.portal_properties.site_properties.getProperty('https_address') + 'logged_in?came_from=%s' % self.REQUEST.get('URL'))
                 return self.REQUEST.SESSION.get('eid_username'), self.REQUEST.SESSION.get('eid_username')
             else:
                 #lookup user national register in registered users
@@ -113,19 +114,21 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                     #we do not call logged_in here if the url is not redirectable (see login_next.cpy in CMFPlone)
                     if not self.REQUEST.SESSION.has_key('eid_logged_in_executed'):
                         not_redirectable_urls = ['login', 'login_success', 'login_password', 'login_failed',
-                                               'login_form', 'logged_in', 'logged_out', 'logout', 'registered',
+                                               'logged_in', 'logged_out', 'logout', 'registered',
                                                'mail_password', 'mail_password_form', 'join_form',
                                                'require_login', 'member_search_results'] 
                         redirectable = True
                         for not_redirectable_url in not_redirectable_urls:
                             if not_redirectable_url in self.REQUEST.get('URL'):
+                                #print "not redir found"
                                 redirectable = False
                                 break
                                 
                         if redirectable:
+                            #print "redir found and executed"
                             self.REQUEST.SESSION.set('eid_logged_in_executed', 1)
                             portal = getToolByName(self, 'portal_url').getPortalObject()
-                            self.REQUEST.RESPONSE.redirect(portal.portal_properties.site_properties.getProperty('https_address') + '?came_from=%s' % self.REQUEST.get('URL'))
+                            self.REQUEST.RESPONSE.redirect(portal.portal_properties.site_properties.getProperty('https_address') + 'logged_in?came_from=%s' % self.REQUEST.get('URL'))
                     
                     self.REQUEST.SESSION.set('eid_username', user_name)
                     return user_name, user_name                    

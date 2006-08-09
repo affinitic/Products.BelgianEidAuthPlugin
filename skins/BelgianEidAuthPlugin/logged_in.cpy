@@ -63,5 +63,10 @@ if context.REQUEST.SESSION.has_key('eid_username'):
     context.acl_users.portal_role_manager.assignRoleToPrincipal('MemberWithEid', member.getId())
 else:
     context.acl_users.portal_role_manager.removeRoleFromPrincipal('MemberWithEid', member.getId())
+
+#this is managed in BelgianEidAuthPlugin.py too
+if not context.REQUEST.SESSION.has_key('eid_logged_in_executed'):
+    context.REQUEST.SESSION.set('eid_logged_in_executed', 1)
+    
 #<-- end of patch
 return state

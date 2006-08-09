@@ -60,6 +60,35 @@ If you do not have an account here, head over to the
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_eid">Using your eid card</strong></legend>
 <img class="LSBox" src="chip.gif" />
 <br><p style="padding-left: 5em; " i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick">Insert your card in the card reader and <tal:https_address i18n:name="https_address" tal:content="python: context.portal_properties.site_properties.getProperty('https_address')" /><a href="" tal:attributes="href python: context.portal_properties.site_properties.getProperty('https_address')">click here to connect</a></p>
+
+<form tal:attributes="action python:context.portal_properties.site_properties.getProperty('https_address') + '/' + template.id"
+      method="post"
+      id="login_form"
+      tal:condition="python:auth">
+        <tal:manage_came_from tal:define="length python:len(context.REQUEST.get('BASE2'))" tal:condition="python: context.REQUEST.get('HTTP_REFERER')">
+         <input type="hidden"
+                name="came_from"
+                value=""
+                tal:attributes="value python: context.portal_properties.site_properties.getProperty('https_address') + context.REQUEST.get('HTTP_REFERER')[length+1:]" />
+        </tal:manage_came_from>
+
+        <input type="hidden" name="form.submitted" value="1" />
+        <input type="hidden" name="js_enabled" id="js_enabled" value="1" />
+        <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="1" />
+      
+        <div class="formControls">
+
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="submit"
+                   value="Log in"
+                   i18n:attributes="value label_log_in;"
+                   tal:attributes="tabindex tabindex/next;"
+                   />
+        </div>
+</form>
+
 </fieldset>
 <fieldset>
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_passwd">Using the username and password you received by mail</strong></legend>
@@ -71,7 +100,7 @@ If you do not have an account here, head over to the
             name="came_from"
             value=""
         tal:attributes="value came_from" />
-
+        <p tal:content="came_from">value</p>
         <input type="hidden" name="form.submitted" value="1" />
         <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
         <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
