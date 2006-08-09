@@ -26,7 +26,7 @@ msgid "connect_eid_with_eid"
 msgstr "Carte d'identité électronique"
 
 msgid "connect_eid_insertandclick"
-msgstr "Insérez votre carte dans votre lecteur et <a href='$https_address'>cliquez ici pour vous connecter</a>.  Pour plus d'informations concernant l'identification par carte d'identité électronique, <a href='http://eid.belgium.be' target='_blank'>cliquez ici</a>."
+msgstr "N'oubliez pas d'insérer votre carte dans votre lecteur avant de vous connecter.  Vous devez aussi avoir installé le programme de lecture et gestion de carte d'identité électronique belge sur votre ordinateur.  <a href='http://eid.belgium.be' target='_blank'>Plus d'informations concernant l'identification par carte d'identité électronique</a>."
 
 msgid "connect_eid_button"
 msgstr "Cliquez sur le bouton ci-dessous pour vous connecter avec votre carte d'identité électronique."
