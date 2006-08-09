@@ -63,7 +63,5 @@ if context.REQUEST.SESSION.has_key('eid_username'):
     context.acl_users.portal_role_manager.assignRoleToPrincipal('MemberWithEid', member.getId())
 else:
     context.acl_users.portal_role_manager.removeRoleFromPrincipal('MemberWithEid', member.getId())
-
 #<-- end of patch
-
 return state

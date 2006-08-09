@@ -8,15 +8,16 @@ msgstr ""
 "Domain: belgianeidauthplugin\n"
 "X-is-fallback-for: fr-ca fr-be fr-fr\n"
 
-#choose_connection_mode.pt
-msgid "connect_eid_sign_in"
-msgstr "Veuillez vous identifier en utilisant votre nom d'utilisateur et votre mot de passe ou votre carte d'identité électronique."
+#join_form.pt
 
-msgid "connect_eid_more"
-msgstr "Si vous souhaitez obtenir plus d'informations sur la connexion par carte d'identité électronique, <a href='http://eid.belgium.be'>visitez le portail fédéral</a>"
+msgid "already_connected"
+msgstr "Vous êtes déjà connecté"
+
+msgid "already_connected_description"
+msgstr "Si vous souhaitez vous déconnecter ou vous connecter avec un autre nom d'utilisateur, <a href='logout'>cliquez ici</a>"
 
 msgid "connect_eid_desc"
-msgstr "Lorsque vous avez créé un compte, vous avez deux possibilités pour vous connecter :"
+msgstr "Connectez-vous à l'aide de votre \"carte d'identité électronique\" ou d'un \"nom d'utilisateur/mot de passe\"."
 
 msgid "connect_eid_with_passwd"
 msgstr "Nom d'utilisateur et mot de passe"
@@ -25,20 +26,14 @@ msgid "connect_eid_with_eid"
 msgstr "Carte d'identité électronique"
 
 msgid "connect_eid_insertandclick"
-msgstr "Insérez votre carte dans votre lecteur et <a href='$https_address'>cliquez ici pour vous connecter</a>"
+msgstr "Insérez votre carte dans votre lecteur et <a href='$https_address'>cliquez ici pour vous connecter</a>.  Pour plus d'informations concernant l'identification par carte d'identité électronique, <a href='http://eid.belgium.be' target='_blank'>cliquez ici</a>."
 
 msgid "connect_eid_button"
 msgstr "Cliquez sur le bouton ci-dessous pour vous connecter avec votre carte d'identité électronique."
 
-msgid "welcome_after_connect"
-msgstr "Bienvenue, vous êtes bien connecté"
+msgid "help_difference_description"
+msgstr "<strong>Quelle est la différence?</strong>  En vous connectant avec votre carte d'identité électronique, vous serez redirigé vers un site HTTPS, ce qui signifie un site plus sécurisé.  Certains services ne sont disponibles que si vous êtes connecté avec votre carte d'identité électronique au lieu de la méthode classique \"nom d'utilisateur/mot de passe\".  Vous serez averti dans le site lorsqu'un service nécessitera une identification par carte d'identité électronique."
 
-msgid "help_after_connect_without_eid"
-msgstr "Pour profiter de l'authentification sécurisée, n'hésitez pas à vous connecter à l'aide de votre carte d'identité électronique.  Pour plus d'informations concernant l'authentification par carte d'identité électronique, <a href='http://eid.belgium.be' target='_blank'>visitez le site fédéral http://eid.belgium.be</a>"
-
-msgid "help_after_connect_with_eid"
-msgstr "Vous êtes connecté en mode sécurisé à l'aide de votre carte d'identité électronique.  Vous aurez dès lors accès à tous les services nécessitant une connexion sécurisée.  Afin de continuer à profiter de cette connexion sécurisée, continuez à vous connecter dorénavant à l'aide de votre carte d'identité électronique.  Si vous n'avez plus la possibilité de vous connecter à l'aide de votre carte d'identité électronique (perte, oubli, ...) vous aurez toujours la possibilité de vous connecter à l'aide du 'Nom d'utilisateur' et du 'Mot de passe' que vous avez choisi lors de la création de votre compte."
-  
 msgid "help_about_password"
 msgstr "Si vous avez oublié votre mot de passe, <a href='mail_password_form?userid=${member_id}'>cliquez ici</a>"
 

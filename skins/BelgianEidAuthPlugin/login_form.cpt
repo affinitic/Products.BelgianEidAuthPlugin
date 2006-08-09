@@ -10,8 +10,13 @@
 </head>
 
 <body>
+<div metal:fill-slot="main">
+<div tal:condition="python: not isAnon">
+<h1 i18n:domain="belgianeidauthplugin" i18n:translate="already_connected">You are already connected</h1>
+<p i18n:domain="belgianeidauthplugin" i18n:translate="already_connected_description">If you want to disconnect or to connect with another username, please <a href="logout">log out</a></p>
+</div>
 
-<div metal:fill-slot="main"
+<div tal:condition="isAnon"
      tal:define="auth nocall:here/acl_users/credentials_cookie_auth|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
                  came_from python:test(utool.isURLInPortal(came_from), came_from, None);
@@ -23,11 +28,7 @@
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
-<p i18n:translate="description_sign_in">
-To access this part of the site, you need to log in with your user name and password.
-</p>
-
-<p i18n:translate="description_no_account"
+<div i18n:translate="description_no_account"
    tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
    tal:condition="python: join and checkPermission('Add portal member', here)">
 
@@ -42,16 +43,7 @@ If you do not have an account here, head over to the
        i18n:translate="description_no_account_registration_linktext">
         registration form</a></span>.
 
-</p>
-
-<p tal:condition="python:checkPermission('Mail forgotten password', here)"
-     i18n:translate="help_password_retrieval">
-    If you have forgotten your password,
-    <span i18n:name="click_here">
-	<a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
-	   i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a>
-    </span>.
-</p>
+</div>
 
 <div id="enable_cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
   Cookies are not enabled. You must <span i18n:name="enable_cookies">
@@ -63,18 +55,18 @@ If you do not have an account here, head over to the
 </div>
 <br>
 <strong><p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_desc">When you have subscribed, you have two possibilities to connect :</p></strong>
-<fieldset style="margin-bottom: 5em ;">
+<p class="discreet" i18n:domain="belgianeidauthplugin" i18n:translate="help_difference_description">What is the difference?  By connecting with your eID card, you will be redirected to a HTTPS site wich mean more security for transactions.  Moreover, when you connect with your eID card, you will be able to receive more services than when you are connected using the classical username/password method.  You will be warned in the site while a authentication with an eID card is required to access a particular service.</p>
+<fieldset style="padding-bottom: 1em; margin-bottom: 1.5em; ">
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_eid">Using your eid card</strong></legend>
-<img src="chip.gif" />
-<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick">Insert your card in the card reader and <tal:https_address i18n:name="https_address" tal:content="python: context.portal_properties.site_properties.getProperty('https_address')" /><a href="" tal:attributes="href python: context.portal_properties.site_properties.getProperty('https_address')">click here to connect</a></p>
+<img class="LSBox" src="chip.gif" />
+<br><p style="padding-left: 5em; " i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick">Insert your card in the card reader and <tal:https_address i18n:name="https_address" tal:content="python: context.portal_properties.site_properties.getProperty('https_address')" /><a href="" tal:attributes="href python: context.portal_properties.site_properties.getProperty('https_address')">click here to connect</a></p>
 </fieldset>
-
+<fieldset>
+<legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_passwd">Using the username and password you received by mail</strong></legend>
 <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
       method="post"
       id="login_form"
       tal:condition="python:auth">
-      <fieldset>
-       <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_passwd">Using the username and password you received by mail</strong></legend>
         <input type="hidden"
             name="came_from"
             value=""
@@ -168,17 +160,22 @@ If you do not have an account here, head over to the
                    tal:attributes="tabindex tabindex/next;
                                onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
                    />
-
+        </div>
+        <div tal:condition="python:checkPermission('Mail forgotten password', here)"
+             i18n:translate="help_password_retrieval">
+         If you have forgotten your password,
+         <span i18n:name="click_here">
+	  <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
+	     i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a>
+         </span>.
         </div>
 
         <p i18n:translate="remember_to_log_out">
-            Please log out or exit your browser when you're done.
+         Please log out or exit your browser when you're done.
         </p>
-
-    </fieldset>
-
 </form>
+</fieldset>
 </div>
-
+</div>
 </body>
 </html>
