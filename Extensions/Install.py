@@ -79,5 +79,25 @@ def install(self):
             prm.addRole("MemberWithEid", "MemberWithEid", "A member that connect with his eID card")
         else:
             out.write("MemberWithEid role already exist")
+
+    #We add the BelgianEidAuthPlugin in plonePas
+    if HAS_PLONEPAS:
+        pas = getToolByName(self, 'acl_users', None)
+        if not hasattr(pas, 'BelgianEidAuthPlugin'):
+            pas.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin('BelgianEidAuthPlugin', title='BelgianEidAuthPlugin')
+        #we activate the interfaces on the plugin
+#        plugin_obj = acl.BelgianEidAuthPlugin
+#        activatable = []
+#        try:
+#            for info in plugin_obj.plugins.listPluginTypeInfo():
+#                interface = info['interface']
+#                interface_name = info['id']
+#                if plugin_obj.testImplements(interface):
+#                    activatable.append(interface_name)
+#                    out.write(" - Activating: " + info['title'])
+#        except AttributeError:
+#                    out.write("Cannot activate interfaces : It looks like you have a non-PAS acl_users folder.")
+#        plugin_obj.manage_activateInterfaces(activatable)
+
     
     return out.getvalue()
