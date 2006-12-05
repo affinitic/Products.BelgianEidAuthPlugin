@@ -19,7 +19,7 @@ msgid "help_about_password"
 msgstr "If you forget your manual login (username and password),<a href='mail_password_form?userid=${member_id}'>please click here.</a>"
 
 msgid "connect_eid_insertandclick"
-msgstr "Insert your card in the card reader before connection.  <a href="http://eid.belgium.be">More informations</a>."
+msgstr "Insert your card in the card reader before connection.  <a href='http://eid.belgium.be'>More informations</a>."
 
 msgid "connect_eid_button"
 msgstr "Click the button to conect with your eID card"
