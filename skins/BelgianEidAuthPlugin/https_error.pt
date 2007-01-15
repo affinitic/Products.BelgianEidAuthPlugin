@@ -1,0 +1,32 @@
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+    <div metal:fill-slot="top_slot">
+    <metal:block metal:use-macro="here/global_defines/macros/defines" />
+    <div tal:define="dummy python:request.set(test(member.has_role('Manager', here), 'enable_border', 'disable_border'), 1)" />
+    </div>
+
+    <div metal:fill-slot="main">
+    <div tal:content="context/REQUEST" />
+    <div tal:define="errorNb python: context.REQUEST.get('errorNb', None);
+                     error python: context.REQUEST.get('error', None)">
+
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+        <h1 i18n:domain="belgianeidauthplugin" i18n:translate="Error when connecting with your eid card" class="documentFirstHeading">
+            Title or id
+        </h1>
+        <br />
+
+        <p>
+        
+        </p>
+
+    </div>
+    </div>
+</body>
+</html>
