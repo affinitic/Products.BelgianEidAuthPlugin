@@ -49,3 +49,111 @@ msgstr "Vous n'avez pas accepté le certificat que votre navigateur Internet vou
 
 msgid "description_failed_eid_contact"
 msgstr "Si malgré tout vous ne parvenez pas à vous connecter, <a href='contact-info'>contactez-nous</a>"
+
+msgid "error_encountered"
+msgstr "Une erreur d'authentification est survenue : $errorNb"
+
+msgid "errorNb2"
+msgstr "impossible de récupérer l'émetteur du certificat"
+
+msgid "errorNb3"
+msgstr "impossible d'accéder au CRL"
+
+msgid "errorNb4"
+msgstr "impossible de décrypter la signature du certificat"
+
+msgid "errorNb5"
+msgstr "impossible de décrypter la signature du CRL"
+
+msgid "errorNb6"
+msgstr "impossible de décoder la clé publique de l'émetteur"
+
+msgid "errorNb7"
+msgstr "erreur de signature du certificat"
+
+msgid "errorNb8"
+msgstr "erreur de signature de la CRL"
+
+msgid "errorNb9"
+msgstr "le certificat n'est pas encore valide"
+
+msgid "errorNb10"
+msgstr "le certificat a expiré"
+
+msgid "errorNb11"
+msgstr "la CRL n'est pas encore valide"
+
+msgid "errorNb12"
+msgstr "la CRL a expiré"
+
+msgid "errorNb13"
+msgstr "erreur dans le champ 'not before' du certificat"
+
+msgid "errorNb14"
+msgstr "erreur dans le champ 'not after' du certificat"
+
+msgid "errorNb15"
+msgstr "erreur dans le champ 'last update' de la CRL"
+
+msgid "errorNb16"
+msgstr "erreur dans le champ 'next update' de la CRL"
+
+msgid "errorNb17"
+msgstr "erreur mémoire"
+
+msgid "errorNb18"
+msgstr "certificat racine autosigné"
+
+msgid "errorNb19"
+msgstr "certificat autosigné dans la chaine"
+
+msgid "errorNb20"
+msgstr "impossible d'obtenir localement le certificat émetteur"
+
+msgid "errorNb21"
+msgstr "impossible de vérifier la signature 'leaf'"
+
+msgid "errorNb22"
+msgstr "chaine de certificats trop longue"
+
+msgid "errorNb23"
+msgstr "certificat révoqué"
+
+msgid "errorNb24"
+msgstr "autorité de certification invalide"
+
+msgid "errorNb25"
+msgstr "longueur de chemin dépassée"
+
+msgid "errorNb26"
+msgstr "tentative non valide"
+
+msgid "errorNb27"
+msgstr "certificat de confiance douteuse"
+
+msgid "errorNb28"
+msgstr "certificat rejeté ou non fourni"
+
+msgid "errorNb29"
+msgstr "émetteur du sujet incohérent"
+
+msgid "errorNb30"
+msgstr "erreur 'akid' skid"
+
+msgid "errorNb31"
+msgstr "erreur d'émetteur du numéro de série 'akid'"
+
+msgid "errorNb32"
+msgstr "'keyusage' différent de 'certsign'"
+
+msgid "errorNb33"
+msgstr "impossible d'obtenir l'émetteur de la CRL"
+
+msgid "errorNb34"
+msgstr "extension critique non prise en charge"
+
+msgid "errorNb35"
+msgstr "'keyusage' non prévu pour signer une CRL"
+
+msgid "errorNb36"
+msgstr "extension CRL critique non prise en charge"

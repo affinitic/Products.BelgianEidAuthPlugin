@@ -10,8 +10,8 @@
         </h1>
         <br/>
 
-        <p i18n:domain="belgianeidauthplugin" i18n:translate="encountered_error">
-          The encountered error was : <span i18n:translate="" i18n:attributes="translate python: context.REQUEST.get('errorNb')" i18n:name="error" />
+        <p i18n:domain="belgianeidauthplugin" i18n:translate="error_encountered">
+          The encountered error was : <span i18n:translate="" tal:content="python: 'errorNb' + errorNb" i18n:name="errorNb" />
         </p>
 
     </div>

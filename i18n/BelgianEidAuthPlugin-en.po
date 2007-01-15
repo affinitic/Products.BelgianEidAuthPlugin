@@ -39,3 +39,108 @@ msgstr "You did not accepted the certificate that your browser send to you.  If 
 
 msgid "description_failed_eid_contact"
 msgstr "If you can not connect afterall, you can <a href='contact-info'>ccontact us</a>."
+
+msgid "errorNb2"
+msgstr "unable to get issuer certificate"
+
+msgid "errorNb3"
+msgstr "unable to get CRL"
+
+msgid "errorNb4"
+msgstr "unable to decrypt certificate signature"
+
+msgid "errorNb5"
+msgstr "unable to decrypt CRL signature"
+
+msgid "errorNb6"
+msgstr "unable to decode issuer public key"
+
+msgid "errorNb7"
+msgstr "certificate signature failure"
+
+msgid "errorNb8"
+msgstr "CRL signature failure"
+
+msgid "errorNb9"
+msgstr "certificate not yet valid"
+
+msgid "errorNb10"
+msgstr "certificate has expired"
+
+msgid "errorNb11"
+msgstr "CRL not yet valid"
+
+msgid "errorNb12"
+msgstr "CRL has expired"
+
+msgid "errorNb13"
+msgstr "error in certificate 'not before' field"
+
+msgid "errorNb14"
+msgstr "error in certificate 'not after' field"
+
+msgid "errorNb15"
+msgstr "error in CRL 'last update' field"
+
+msgid "errorNb16"
+msgstr "error in CRL 'next update' field"
+
+msgid "errorNb17"
+msgstr "out of memory"
+
+msgid "errorNb18"
+msgstr "depth zero self signed certificate"
+
+msgid "errorNb19"
+msgstr "self signed certificate in chain"
+
+msgid "errorNb20"
+msgstr "unable to get issuer certificate locally"
+
+msgid "errorNb21"
+msgstr "unable to verify leaf signature"
+
+msgid "errorNb22"
+msgstr "certificate chain too long"
+
+msgid "errorNb23"
+msgstr "certificate revoked"
+
+msgid "errorNb24"
+msgstr "invalid certification authority"
+
+msgid "errorNb25"
+msgstr "path length exceeded"
+
+msgid "errorNb26"
+msgstr "invalid purpose"
+
+msgid "errorNb27"
+msgstr "certificate not trusted"
+
+msgid "errorNb28"
+msgstr "certificate rejected, or no certificate provided"
+
+msgid "errorNb29"
+msgstr "subject issuer mismatch"
+
+msgid "errorNb30"
+msgstr "'akid' skid mismatch"
+
+msgid "errorNb31"
+msgstr "'akid' issuer serial mismatch"
+
+msgid "errorNb32"
+msgstr "'keyusage' different from 'certsign'"
+
+msgid "errorNb33"
+msgstr "unable to get CRL issuer"
+
+msgid "errorNb34"
+msgstr "unhandled critical extension"
+
+msgid "errorNb35"
+msgstr "'keyusage' not for CRL signing"
+
+msgid "errorNb36"
+msgstr "unhandled critical CRL extension"
