@@ -51,7 +51,7 @@ msgid "description_failed_eid_contact"
 msgstr "Si malgré tout vous ne parvenez pas à vous connecter, <a href='contact-info'>contactez-nous</a>"
 
 msgid "error_encountered"
-msgstr "Une erreur d'authentification est survenue : $errorNb"
+msgstr "Une erreur d'authentification est survenue :"
 
 msgid "errorNb2"
 msgstr "impossible de récupérer l'émetteur du certificat"
