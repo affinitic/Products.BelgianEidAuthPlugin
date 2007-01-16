@@ -13,8 +13,8 @@
           You have a problem to connect you with your eid card.
         </p>
         <p tal:condition="python: errorNb">
-          <span i18n:translate="error_encountered">The encountered error is : </span>
-          <span i18n:translate="" tal:content="python: 'errorNb' + errorNb"/>
+          <span i18n:translate="error_encountered">The encountered error is :</span>
+          <b i18n:translate="" tal:content="python: 'errorNb' + errorNb"/>
         </p>
 
     </div>

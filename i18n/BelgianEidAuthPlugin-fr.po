@@ -50,8 +50,11 @@ msgstr "Vous n'avez pas accepté le certificat que votre navigateur Internet vou
 msgid "description_failed_eid_contact"
 msgstr "Si malgré tout vous ne parvenez pas à vous connecter, <a href='contact-info'>contactez-nous</a>"
 
+msgid "https_error_message"
+msgstr "Vous avez rencontré un problème pour vous connecter avec votre carte d'identité électronique."
+
 msgid "error_encountered"
-msgstr "Une erreur d'authentification est survenue :"
+msgstr "L'erreur d'authentification suivante est survenue :"
 
 msgid "errorNb2"
 msgstr "impossible de récupérer l'émetteur du certificat"
