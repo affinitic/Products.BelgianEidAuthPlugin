@@ -82,7 +82,7 @@ def install(self):
 
     #We add the BelgianEidAuthPlugin in plonePas
     if HAS_PLONEPAS:
-        pas = getToolByName(self, 'acl_users', None)
+        pas = portal.acl_users
         if not hasattr(pas, 'BelgianEidAuthPlugin'):
             pas.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin('BelgianEidAuthPlugin', title='BelgianEidAuthPlugin')
         #we activate the interfaces on the plugin

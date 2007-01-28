@@ -66,6 +66,18 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         BaseBelgianEidAuthPluginTestCase.afterSetup(self)
 
     # Manually created methods
+    def testExtensionsInstall(self):
+        #we test if the property called https_address is added into site_properties
+        self.failUnless(hasattr(self.portal.portal_properties.site_properties, 'https_address'))
+
+        #we test if the MemberWithEid role exist in PAS
+        pas = self.portal.acl_users
+        prm = pas.portal_role_manager
+        self.failUnless( "MemberWithEid" in prm.listRoleIds())
+
+        #we test if the BelgianEidAuthPlugin plugin is added in plonePas
+        self.failUnless( hasattr(pas, 'BelgianEidAuthPlugin'))
+
     def testExtractCredentials(self):
         """
          We test if the extractCredentials method do what it has to...
@@ -74,8 +86,8 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         REQUEST = portal.REQUEST
         SESSION = portal.REQUEST.SESSION
         #we add the plugin
-        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
-        beap = portal.acl_users.beap
+        #portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.BelgianEidAuthPlugin
         #--------------------> WITHOUT HTTPS <--------------------
         #we check that extractCredentials return None if the REQUEST does not have 'HTTP_SSL_CLIENT_S_DN'
         #weird behaviour of REQUEST that has got every keys ???  We str(REQUEST)...
@@ -128,8 +140,8 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         """
         portal = self.portal
         #we add the plugin
-        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
-        beap = portal.acl_users.beap
+        #portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.BelgianEidAuthPlugin
         
         from_http = None
         self.failIf(beap.getClientData(from_http))
@@ -158,8 +170,8 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         REQUEST = portal.REQUEST
         SESSION = portal.REQUEST.SESSION
         #we add the plugin
-        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
-        beap = portal.acl_users.beap
+        #portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.BelgianEidAuthPlugin
         
         #--------------------> CREDENTIALS WITHOUT 'eid_from_http' KEY <--------------------
         #if the credentials returned by extractCredentials is None, authenticateCredentials must return None too...
@@ -206,8 +218,8 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         REQUEST = portal.REQUEST
         SESSION = portal.REQUEST.SESSION
         #we add the plugin
-        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
-        beap = portal.acl_users.beap
+        #portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.BelgianEidAuthPlugin
 
         nr = "71715100070"
                 
@@ -237,8 +249,8 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         REQUEST = portal.REQUEST
         SESSION = portal.REQUEST.SESSION
         #we add the plugin
-        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
-        beap = portal.acl_users.beap
+        #portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.BelgianEidAuthPlugin
         #we add the 'nationalregister' porperty in portal_memberdata
         portal.portal_memberdata.manage_addProperty('nationalregister', '', 'string')
         pr_tool = getToolByName(portal, 'portal_registration')
@@ -280,8 +292,8 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         REQUEST = portal.REQUEST
         SESSION = portal.REQUEST.SESSION
         #we add the plugin
-        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
-        beap = portal.acl_users.beap
+        #portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.BelgianEidAuthPlugin
         #we add the 'nationalregister' porperty in portal_memberdata
         portal.portal_memberdata.manage_addProperty('nationalregister', '', 'string')
         pr_tool = getToolByName(portal, 'portal_registration')
@@ -315,8 +327,8 @@ class testAllBelgianEidAuthPlugin(BaseBelgianEidAuthPluginTestCase):
         REQUEST = portal.REQUEST
         SESSION = portal.REQUEST.SESSION
         #we add the plugin
-        portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
-        beap = portal.acl_users.beap
+        #portal.acl_users.manage_addProduct['BelgianEidAuthPlugin'].manage_addBelgianEidAuthPlugin(id='beap')
+        beap = portal.acl_users.BelgianEidAuthPlugin
         #we add the 'nationalregister' porperty in portal_memberdata
         portal.portal_memberdata.manage_addProperty('nationalregister', '', 'string')
         pr_tool = getToolByName(portal, 'portal_registration')
