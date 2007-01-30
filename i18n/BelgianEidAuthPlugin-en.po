@@ -9,12 +9,6 @@ msgstr ""
 "X-is-fallback-for: en-ca en-us\n"
 
 #join_form.pt
-msgid "already_connected"
-msgstr "You are already connected"
-
-msgid "already_connected_description"
-msgstr "If you want to disconnect or to connect with another username, please <a href='logout'>click here</a>"
-
 msgid "help_about_password"
 msgstr "If you forget your manual login (username and password),<a href='mail_password_form?userid=${member_id}'>please click here.</a>"
 

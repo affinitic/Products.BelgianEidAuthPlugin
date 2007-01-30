@@ -9,13 +9,6 @@ msgstr ""
 "X-is-fallback-for: fr-ca fr-be fr-fr\n"
 
 #join_form.pt
-
-msgid "already_connected"
-msgstr "Vous êtes déjà connecté"
-
-msgid "already_connected_description"
-msgstr "Si vous souhaitez vous déconnecter ou vous connecter avec un autre nom d'utilisateur, <a href='logout'>cliquez ici</a>"
-
 msgid "connect_eid_desc"
 msgstr "Connectez-vous à l'aide de votre \"carte d'identité électronique\" ou d'un \"nom d'utilisateur/mot de passe\"."
 
