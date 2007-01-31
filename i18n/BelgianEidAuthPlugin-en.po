@@ -10,7 +10,7 @@ msgstr ""
 
 #join_form.pt
 msgid "no_activated_plugin"
-msgstr "It seems that you still have the permission to subbscribe to the sute but there is no way to connect currently.  Contact the site administrator for more informations."
+msgstr "It seems that you still have the permission to subbscribe to the sute but there is no way to connect currently.  <a href='contact-info'>Contact the site administrator</a> for more informations."
 
 msgid "help_about_password"
 msgstr "If you forget your manual login (username and password),<a href='mail_password_form?userid=${member_id}'>please click here.</a>"
