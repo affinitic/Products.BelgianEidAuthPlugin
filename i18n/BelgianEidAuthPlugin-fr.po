@@ -9,6 +9,9 @@ msgstr ""
 "X-is-fallback-for: fr-ca fr-be fr-fr\n"
 
 #join_form.pt
+msgid "no_activated_plugin"
+msgstr "La connexion au site est momentanément suspendue, <a href="contact-info">contactez l'administrateur du site</a> pour plus d'informations."
+
 msgid "connect_eid_desc"
 msgstr "Connectez-vous à l'aide de votre \"carte d'identité électronique\" ou d'un \"nom d'utilisateur/mot de passe\"."
 
