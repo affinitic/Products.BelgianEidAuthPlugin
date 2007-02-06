@@ -4,7 +4,10 @@
 
 <body>
 
-    <div tal:define="errorNb python: context.REQUEST.get('errorNb', None);">
+    <div tal:define="errorNb python: context.REQUEST.get('errorNb', None);
+                     find_i python: context.REQUEST.get('QUERY_STRING', '').find('errorNb=');
+                     digit python: find_i != -1 and context.REQUEST.get('QUERY_STRING', '')[find_i+8:find_i+10] or '';
+                     errorNb python: not errorNb and digit.isdigit() and digit or errorNb;">
         <h1 i18n:translate="">
             Error when connecting with your eid card
         </h1>
