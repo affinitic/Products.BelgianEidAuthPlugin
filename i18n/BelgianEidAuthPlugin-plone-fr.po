@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2007-06-08 12:00-100\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Language-code: fr\n"
+"Language-name: French\n"
+"Preferred-encodings: utf-8 latin1\n"
+"Domain: plone\n"
+"X-is-fallback-for: fr-ca fr-be fr-fr\n"
+
+#. Default: "Because you are logged in via HTTP authentication, the only way to log out is to quit your web browser."
+#: ./skins/plone_login/logged_out.pt
+msgid "description_quit_to_log_out"
+msgstr "Parce que vous êtes connecté(e) via l'authentification HTTP (par exemple avec votre carte d'identité électronique), la seule façon de vous déconnecter est de fermer votre navigateur."
