@@ -1,3 +1,4 @@
+--> order the connection types in the login_form like the order of the activated plugins
 --> if the user does not exist, we do not connect him, but maybe we should give the possibility to add the user if we receive his certificate and the user is not subscribed yet ? So, subscribe a user with eID ?  Retrieve data from card using a Java applet ?
 --> how to add properties to a user ?  Still use portal_memberdata ?
 --> check if the national register number already exists for a subscribed member
