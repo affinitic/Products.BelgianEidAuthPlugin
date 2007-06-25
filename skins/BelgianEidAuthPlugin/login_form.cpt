@@ -37,7 +37,8 @@
 		 ac_name auth/name_cookie|string:__ac_name;
 		 ac_password auth/pw_cookie|string:__ac_password;
 		 ac_persist auth/persist_cookie|nothing;
-		 login_name python:request.get('login_name', request.get(ac_name, ''));">
+		 login_name python:request.get('login_name', request.get(ac_name, ''));
+         plugins python:context.checkActivatedPlugins()">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
@@ -68,12 +69,13 @@ If you do not have an account here, head over to the
 </div>
 <br>
 
-<tal:explain_possibilites condition="python: len(context.checkActivatedPlugins()) > 1 ">
+<tal:explain_possibilites condition="python: len(plugins) > 1 ">
 <strong><p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_desc">When you have subscribed, you have two possibilities to connect :</p></strong>
 <p class="discreet" i18n:domain="belgianeidauthplugin" i18n:translate="help_difference_description">What is the difference?  By connecting with your eID card, you will be redirected to a HTTPS site wich mean more security for transactions.  Moreover, when you connect with your eID card, you will be able to receive more services than when you are connected using the classical username/password method.  You will be warned in the site while a authentication with an eID card is required to access a particular service.</p>
 </tal:explain_possibilites>
 
-<tal:belgianeidauthplugin_activated condition="python: 'BelgianEidAuthPlugin' in context.checkActivatedPlugins()">
+<tal:plugins repeat="plugin plugins">
+<tal:belgianeidauthplugin_activated condition="python: plugin == 'BelgianEidAuthPlugin'">
 <fieldset style="padding-bottom: 1em; margin-bottom: 1.5em; ">
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_eid">Using your eid card</strong></legend>
 <img class="LSBox" src="chip.gif" />
@@ -111,7 +113,7 @@ If you do not have an account here, head over to the
 </fieldset>
 </tal:belgianeidauthplugin_activated>
 
-<tal:source_users_activated condition="python: 'source_users' in context.checkActivatedPlugins()">
+<tal:source_users_activated condition="python: plugin == 'source_users'">
 <fieldset>
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_passwd">Using the username and password you received by mail</strong></legend>
 <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
@@ -226,6 +228,7 @@ If you do not have an account here, head over to the
 </form>
 </fieldset>
 </tal:source_users_activated>
+</tal:plugins>
 
 <tal:no_activated_plugin condition="python: len(context.checkActivatedPlugins()) == 0">
 <p i18n:domain="belgianeidauthplugin" i18n:translate="no_activated_plugin">The connection to the site is temporary suspended.  <a href="contact-info">Contact the site administrator</a> for more informations.</p>
