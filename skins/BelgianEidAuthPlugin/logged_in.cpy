@@ -18,23 +18,10 @@ if REQUEST.get('__cp', None) is not None:
 
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
-#manage our own failure_eid
-#beginning patch -->    
-    if context.REQUEST.SESSION.has_key('eid_from_http'):
-        #connection with an eid card failure
-        #it seems that the user is not subscribed ?
-        context.plone_utils.addPortalMessage(_(u'Login failed'))        
-        return state.set(status='failure_eid')
-    else:
-        REQUEST.RESPONSE.expireCookie('__ac', path='/')
-        context.plone_utils.addPortalMessage(_(u'Login failed'))
-        return state.set(status='failure')
+    REQUEST.RESPONSE.expireCookie('__ac', path='/')
+    context.plone_utils.addPortalMessage(_(u'Login failed'))
+    return state.set(status='failure')
     
-#    REQUEST.RESPONSE.expireCookie('__ac', path='/')
-#    context.plone_utils.addPortalMessage(_(u'Login failed'))
-#    return state.set(status='failure')
-#<-- end of patch
-
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', '2000/01/01')
 initial_login = int(str(login_time) == '2000/01/01')

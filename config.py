@@ -41,4 +41,7 @@ try:
 except ImportError:
     pass
 
+DEPENDENCIES = ['CPDescriptive']
+PRODUCT_DEPENDENCIES = ['CPDescriptive']
+
 product_globals=globals()

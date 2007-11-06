@@ -170,13 +170,17 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             from_http = request.get('HTTP_SSL_CLIENT_S_DN')
             if from_http:
                 #we search the national register number in the request send from Apache
-                nr = self.getClientData(from_http)
-                if nr:
+                ret = self.getClientData(from_http)
+                if ret:
+                    (nr, last_name, first_name, full_name) = ret
                     creds.update({'eid_nr':nr,
                                   'eid_from_http':1,
                                   'eid_http_ssl_client_s_dn': from_http
                                 })
                     request.SESSION.set('eid_nr', creds['eid_nr'])
+                    request.SESSION.set('eid_last_name', last_name)
+                    request.SESSION.set('eid_first_name', first_name)
+                    #request.SESSION.set('eid_full_name', full_name)
                     request.SESSION.set('eid_from_http', creds['eid_from_http'])
                     #we save the 'HTTP_SSL_CLIENT_S_DN' in the SESSION to see if it is always the same send by Apache
                     request.SESSION.set('eid_http_ssl_client_s_dn', creds['eid_http_ssl_client_s_dn'])
@@ -217,21 +221,27 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         #there can be UTF/ISO encoding problems with OpenSSL/Apache, so we do what we have to to correct this
         #UTF-8 codes are not passed as codes but as string
         #"é" should be '\xc3\xa9' but it is returned as '\\xc3\\xa9'
-        nr = None
+        nr = first_name = last_name = full_name = None
         
         try:
-            #we need to correct the string if we wish to retrieve CN/SN/GN datas from fro_http
-            #corrected_string = eval("u'" + from_http + "'")
-            #corrected_string = corrected_string.encode('latin1')
-            #corrected_string = unicode(corrected_string, 'utf-8')
-            #datas = corrected_string.split('/')
-            
-            datas = from_http.split('/')
+            #we need to correct the string if we wish to retrieve CN/SN/GN datas from from_http
+            corrected_string = eval("u'" + from_http + "'")
+            corrected_string = corrected_string.encode('latin1')
+            corrected_string = unicode(corrected_string, 'utf-8')
+            datas = corrected_string.split('/')
+            #datas = from_http.split('/')
             #search for SN, GN and serialNumber
             for data in datas:
                 if data[:12] == "serialNumber":
                     nr = data[13:]
+                elif data[:3] == "SN=":
+                    last_name = data[3:]
+                elif data[:3] == "GN=":
+                    first_name = data[3:]
+                elif data[:3] == "CN=":
+                    full_name = data[3:-17]
 
+            #print "nr='%s',last='%s',first='%s',full='%s'"%(nr,last_name,first_name,full_name)
             #we check that there are 11 numbers left
             if len(nr) != 11:
                 raise ValueError
@@ -249,7 +259,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             logger.info("Failed to extract datas from from_http in getClientData(self, from_http).")
             return None
         
-        return nr
+        return (nr, last_name, first_name, full_name)
 
 
     security.declarePrivate('getUserNameFromNR')
