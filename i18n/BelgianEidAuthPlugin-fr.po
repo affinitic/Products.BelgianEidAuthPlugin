@@ -33,12 +33,15 @@ msgstr "<strong>Quelle est la différence?</strong>  En vous connectant avec vot
 msgid "help_about_password"
 msgstr "Si vous avez oublié votre mot de passe, <a href='mail_password_form?userid=${member_id}'>cliquez ici</a>"
 
+msgid "description_no_account"
+msgstr "!! POUR OBTENIR UN IDENTIFIANT ET UN MOT DE PASSE, VOUS DEVEZ D'ABORD COMPLÉTER LE <a href='join_form'>FORMULAIRE D'INSCRIPTION</a>."
+
 #login_eid_failed.pt
 msgid "description_failed_eid_introduce"
 msgstr "Vous essayez de vous connecter à l'aide de votre carte d'identité électronique mais la connexion est refusée.  Vérifiez ci-dessous si vous pouvez en trouver la cause."
 
 msgid "description_failed_eid_subscribe"
-msgstr "Vous ne vous êtes pas inscris au site.  Si c'est le cas, <a href='join_form'> inscrivez-vous</a>"
+msgstr "Vous n'êtes pas inscrit sur le site. Veuillez le faire en remplissant ce <a href='join_form'>formulaire</a>."
 
 msgid "description_failed_eid_certificate"
 msgstr "Vous n'avez pas accepté le certificat que votre navigateur Internet vous a proposé.  Si c'est le cas, vous devez fermer votre navigateur et recommencer la connexion en acceptant le certificat"
