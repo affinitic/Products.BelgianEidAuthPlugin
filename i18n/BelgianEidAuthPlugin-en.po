@@ -25,7 +25,7 @@ msgid "help_difference_description"
 msgstr "What is the difference?  By connecting with your eID card, you will be redirected to a HTTPS site wich mean more security for transactions.  Moreover, when you connect with your eID card, you will be able to receive more services than when you are connected using the classical username/password method.  You will be warned in the site while a authentication with an eID card is required to access a particular service."
 
 msgid "description_no_account"
-msgstr "!! TO OBTAIN A USERNAME AND PASSWORD, YOU MUST FIRST GO TO THE <a href="join_form">REGISTRATION FORM</a>."
+msgstr "!! TO OBTAIN A USERNAME AND PASSWORD, YOU MUST FIRST GO TO THE <a href='join_form'>REGISTRATION FORM</a>."
 
 #login_eid_failed.pt
 msgid "description_failed_eid_introduce"
