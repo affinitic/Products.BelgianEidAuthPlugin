@@ -33,12 +33,13 @@
      tal:define="auth nocall:here/acl_users/credentials_cookie_auth|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
                  came_from python:test(utool.isURLInPortal(came_from), came_from, None);
-		 errors options/state/getErrors;
-		 ac_name auth/name_cookie|string:__ac_name;
-		 ac_password auth/pw_cookie|string:__ac_password;
-		 ac_persist auth/persist_cookie|nothing;
-		 login_name python:request.get('login_name', request.get(ac_name, ''));
-         plugins python:context.checkActivatedPlugins()">
+                 errors options/state/getErrors;
+                 ac_name auth/name_cookie|string:__ac_name;
+                 ac_password auth/pw_cookie|string:__ac_password;
+                 ac_persist auth/persist_cookie|nothing;
+                 login_name python:request.get('login_name', request.get(ac_name, ''));
+                 can_join python:checkPermission('Add portal member', here);
+                 plugins python:context.checkActivatedPlugins()">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
@@ -79,7 +80,9 @@ If you do not have an account here, head over to the
 <fieldset style="padding-bottom: 1em; margin-bottom: 1.5em; ">
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_eid">Using your eid card</strong></legend>
 <img class="LSBox" src="chip.gif" />
-<p style="padding-left: 5em; " i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insertandclick">Insert your card in the card reader before connection.  <a href="http://eid.belgium.be">More informations</a>.</p>
+<p tal:condition="not:can_join" style="padding-left: 5em; " i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insert_click">Insert your card in the card reader before connection.</p>
+<p tal:condition="can_join" style="padding-left: 5em; " i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_insert_join">Insert your card in the card reader before connection or to join</p>
+<p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_help"> <a href="http://eid.belgium.be">More informations</a>.</p>
 
 <form tal:attributes="action python:context.portal_properties.site_properties.getProperty('https_address') + '/' + template.id"
       method="post"
@@ -116,9 +119,9 @@ If you do not have an account here, head over to the
 <tal:source_users_activated condition="python: plugin == 'source_users'">
 <fieldset>
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_passwd">Using the username and password you received by mail</strong></legend>
-<div tal:condition="python:checkPermission('Add portal member', here)">
+<div tal:condition="can_join">
 <span i18n:translate="description_no_account" i18n:domain="belgianeidauthplugin">
-!! To obtain a username and password, you must first go to the <a href="join_form">registration form</a></span>
+To obtain a username and password, you must first go to the <a href="join_form">registration form</a></span>
 </div><br />
 <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
       method="post"
@@ -221,8 +224,8 @@ If you do not have an account here, head over to the
              i18n:translate="help_password_retrieval">
          If you have forgotten your password,
          <span i18n:name="click_here">
-	  <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
-	     i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a>
+      <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
+         i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a>
          </span>.
         </div>
 

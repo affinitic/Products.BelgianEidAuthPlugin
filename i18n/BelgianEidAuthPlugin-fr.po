@@ -21,20 +21,26 @@ msgstr "Nom d'utilisateur et mot de passe"
 msgid "connect_eid_with_eid"
 msgstr "Carte d'identité électronique"
 
-msgid "connect_eid_insertandclick"
-msgstr "N'oubliez pas d'insérer votre carte dans votre lecteur AVANT DE VOUS CONNECTER OU POUR VOUS INSCRIRE. Vous devez aussi avoir installé le programme de lecture et gestion de carte d'identité électronique belge sur votre ordinateur.  <a href='http://eid.belgium.be' target='_blank'>Plus d'informations concernant l'identification par carte d'identité électronique</a>."
+msgid "connect_eid_insert_click"
+msgstr "N'oubliez pas d'insérer votre carte dans votre lecteur AVANT DE VOUS CONNECTER."
+
+msgid "connect_eid_insert_join"
+msgstr "N'oubliez pas d'insérer votre carte dans votre lecteur AVANT DE VOUS CONNECTER OU POUR VOUS INSCRIRE."
+
+msgid "connect_eid_help"
+msgstr "Vous devez aussi avoir installé le programme de lecture et gestion de carte d'identité électronique belge sur votre ordinateur. <a href='http://eid.belgium.be' target='_blank'>Plus d'informations concernant l'identification par carte d'identité électronique</a>."
 
 msgid "connect_eid_button"
 msgstr "Cliquez sur le bouton ci-dessous pour vous connecter avec votre carte d'identité électronique."
 
 msgid "help_difference_description"
-msgstr "<strong>Quelle est la différence?</strong>  En vous connectant avec votre carte d'identité électronique, vous serez redirigé vers un site HTTPS, ce qui signifie un site plus sécurisé.  Certains services ne sont disponibles que si vous êtes connecté avec votre carte d'identité électronique au lieu de la méthode classique \"nom d'utilisateur/mot de passe\".  Vous serez averti dans le site lorsqu'un service nécessitera une identification par carte d'identité électronique."
+msgstr "<strong>Quelle est la différence?</strong> Certains services ne sont disponibles que si vous êtes connecté avec votre carte d'identité électronique au lieu de la méthode classique \"nom d'utilisateur/mot de passe\".  Vous serez averti dans le site lorsqu'un service nécessitera une identification par carte d'identité électronique."
 
 msgid "help_about_password"
 msgstr "Si vous avez oublié votre mot de passe, <a href='mail_password_form?userid=${member_id}'>cliquez ici</a>"
 
 msgid "description_no_account"
-msgstr "!! POUR OBTENIR UN IDENTIFIANT ET UN MOT DE PASSE, VOUS DEVEZ D'ABORD COMPLÉTER LE <a href='join_form'>FORMULAIRE D'INSCRIPTION</a>."
+msgstr "POUR OBTENIR UN IDENTIFIANT ET UN MOT DE PASSE, VOUS DEVEZ D'ABORD COMPLÉTER LE <a href='join_form'>FORMULAIRE D'INSCRIPTION</a>."
 
 #login_eid_failed.pt
 msgid "description_failed_eid_introduce"
