@@ -1,0 +1,50 @@
+web:
+  image: imio/eid
+  command: tmux
+  environment:
+    - SHELL=/usr/bin/zsh
+    - LC_ALL=en_US.UTF-8
+    - LANG=en_US.UTF-8
+    - FLAKE8_IGNORE=E501
+    - TERM=xterm-256color
+    - CLIENT_HOME=/code
+  ports:
+    - "8080:8080"
+  volumes:
+    - var/filestorage:/code/var/filestorage
+    - var/blobstorage:/code/var/blobstorage
+    - buildout.cfg:/code/buildout.cfg
+    - setup.py:/code/setup.py
+    - Products/:/code/Products
+webdev:
+  image: imio/eid
+  command: tmux
+  environment:
+    - SHELL=/usr/bin/zsh
+    - LC_ALL=en_US.UTF-8
+    - LANG=en_US.UTF-8
+    - FLAKE8_IGNORE=E501
+    - TERM=xterm-256color
+    - CLIENT_HOME=/code
+  ports:
+    - "8080:8080"
+  volumes:
+    - var/filestorage:/code/var/filestorage
+    - var/blobstorage:/code/var/blobstorage
+    - .ctags:/code/.ctags
+    - .flake8:/code/.config/flake8
+    - .history:/code/.history
+    - .pylintrc:/code/.pylintrc
+    - .tmuxinator:/code/.tmuxinator
+    - .tricks.yaml:/code/.tricks.yaml
+    - /dev/log:/dev/log
+    - /etc/tmux.conf:/etc/tmux.conf
+    - buildout.cfg:/code/buildout.cfg
+    - setup.py:/code/setup.py
+    - ~/.tmp:/code/.tmp
+    - ~/.tmux.conf:/code/.tmux.conf
+    - ~/.vim:/code/.vim
+    - ~/.vimrc:/code/.vimrc
+    - ~/.zsh:/code/.zsh
+    - ~/.zshrc:/code/.zshrc
+    - Products/:/code/Products
