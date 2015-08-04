@@ -1,8 +1,16 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five"
-           xmlns:monkey="http://namespaces.plone.org/monkey"
+           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+           xmlns:cmf="http://namespaces.zope.org/cmf"
            xmlns:i18n="http://namespaces.zope.org/i18n">
+
+   <cmf:registerDirectory name="BelgianEidAuthPlugin"/>
+
+   <genericsetup:registerProfile
+     name="default"
+     title="BelgianEID"
+     directory="profiles/default"
+     description="Extension profile for Products.BelgianEidAuthPlugin."
+     provides="Products.GenericSetup.interfaces.EXTENSION" />
 
 
 </configure>

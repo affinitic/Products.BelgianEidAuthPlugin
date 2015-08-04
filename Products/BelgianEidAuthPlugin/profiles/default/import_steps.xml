@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="BelgianEidAuthPlugin"
+               version="1"
+               handler="Products.BelgianEidAuthPlugin.setuphandlers.setup"
+               title="BelgianEidAuthPluginn: miscellaneous import steps">
+    <dependency step="skins" />
+    Setup
+  </import-step>
+</import-steps>

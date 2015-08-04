@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<object name="portal_skins" allow_any="False" cookie_persistence="False">
+
+ <object name="BelgianEidAuthPlugin"
+         meta_type="Filesystem Directory View"
+         directory="Products.BelgianEidAuthPlugin:skins/BelgianEidAuthPlugin"/>
+
+ <skin-path name="*">
+  <layer name="BelgianEidAuthPlugin"
+         insert-after="plone_templates"/>
+ </skin-path>
+
+</object>
