@@ -29,7 +29,8 @@ setup(name='Products.BelgianEidAuthPlugin',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'Plone'
       ],
       extras_require={
-          'test': ['plone.testing', 'plone.app.testing', 'plone.api'],
+          'test': ['plone.testing', 'plone.app.testing', 'plone.api', 'Products.PloneTestCase'],
       })

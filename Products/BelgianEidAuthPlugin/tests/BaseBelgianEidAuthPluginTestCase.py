@@ -41,7 +41,7 @@ from sets import Set
 from Testing import ZopeTestCase
 from Products.PloneTestCase import PloneTestCase
 from Products.BelgianEidAuthPlugin.config import HAS_PLONEPAS
-from Products.Archetypes.tests.utils import DummySessionDataManager
+#from Products.Archetypes.tests.utils import DummySessionDataManager
 
 # Add common dependencies
 if not HAS_PLONEPAS:
@@ -54,11 +54,11 @@ DEPENDENCIES = []
 for dependency in DEPENDENCIES:
     ZopeTestCase.installProduct(dependency)
 
-ZopeTestCase.installProduct('BelgianEidAuthPlugin')
+ZopeTestCase.installProduct('Products.BelgianEidAuthPlugin')
 
 PRODUCTS = list()
 PRODUCTS += DEPENDENCIES
-PRODUCTS.append('BelgianEidAuthPlugin')
+PRODUCTS.append('Products.BelgianEidAuthPlugin')
 
 testcase = PloneTestCase.PloneTestCase
 
@@ -82,7 +82,29 @@ class BaseBelgianEidAuthPluginTestCase(testcase):
         uf.userFolderAddUser('anon', 'anon', ['Anonymous', ], [])
         self.wft = self.portal.portal_workflow
         request = self.app.REQUEST
-        self.app._setObject('session_data_manager', DummySessionDataManager())
+        tf_name = 'temp_folder'
+        idmgr_name = 'browser_id_manager'
+        toc_name = 'temp_transient_container'
+        sdm_name = 'session_data_manager'
+	app = self.app
+
+        from Products.Sessions.BrowserIdManager import BrowserIdManager
+        from Products.Sessions.SessionDataManager import SessionDataManager
+        from Products.TemporaryFolder.TemporaryFolder import MountedTemporaryFolder
+        from Products.Transience.Transience import TransientObjectContainer
+        bidmgr = BrowserIdManager(idmgr_name)
+	tf = MountedTemporaryFolder(tf_name, title="Temporary Folder")
+        toc = TransientObjectContainer(toc_name, title='Temporary '
+                                       'Transient Object Container', timeout_mins=20)
+        session_data_manager=SessionDataManager(id=sdm_name, path='/'+tf_name+'/'+toc_name, 
+                                                title='Session Data Manager', requestName='TESTOFSESSION')
+	app._setObject(idmgr_name, bidmgr)
+        app._setObject(sdm_name, session_data_manager)
+        app._setObject(tf_name, tf)
+        #transaction.commit()
+        app.temp_folder._setObject(toc_name, toc)
+
+        #self.app._setObject('session_data_manager', DummySessionDataManager())
         sdm = self.app.session_data_manager
         request.set('SESSION', sdm.getSessionData())
         
