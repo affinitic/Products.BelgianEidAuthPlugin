@@ -1,0 +1,10 @@
+tricks:
+- watchdog.tricks.LoggerTrick:
+    patterns: ["*.py", "*.zcml"]
+    ignore_patterns: ["*.tmp*", "*parts/*", "*eggs/*"]
+- watchdog.tricks.ShellCommandTrick:
+    patterns: ["*.py"]
+    ignore_patterns: ["*.tmp*", "*parts/*", "*eggs/*", "*develop-eggs/*"]
+    shell_command: 'flake8 "${watch_src_path}"'
+- watchdog_tricks.compiler.CtagsTrick:
+    filetypes: ['py']

@@ -1,0 +1,9 @@
+name: products_belgianeidauthplugin
+root: /code
+windows:
+  - editor:
+      layout: 6c7f,213x56,0,0[213x39,0,0,0,213x16,0,40{106x16,0,40,1,106x16,107,40,2}]
+      panes:
+        - vim -n -S ~/.vim/sessions/belgianeidauth.vim
+        - watchmedo tricks-from .tricks.yaml
+        - git pull && ctags parts/omelette

@@ -1,0 +1,5 @@
+--recurse=yes
+--languages=Python
+--tag-relative=no
+--exclude=.git
+--exclude=*.tmp*

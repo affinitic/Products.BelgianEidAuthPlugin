@@ -1,6 +1,6 @@
 web:
   image: imio/eid
-  command: tmux
+  command: bin/instance fg
   environment:
     - SHELL=/usr/bin/zsh
     - LC_ALL=en_US.UTF-8
@@ -18,7 +18,7 @@ web:
     - Products/:/code/Products
 webdev:
   image: imio/eid
-  command: tmux
+  command: mux start package
   environment:
     - SHELL=/usr/bin/zsh
     - LC_ALL=en_US.UTF-8
@@ -48,3 +48,4 @@ webdev:
     - ~/.zsh:/code/.zsh
     - ~/.zshrc:/code/.zshrc
     - Products/:/code/Products
+    - ~/.oh-my-zsh:/code/.oh-my-zsh

@@ -1,1 +1,151 @@
 : 1434104265:0;exit
+: 1438685170:0;ls
+: 1438685173:0;exit
+: 1438685258:0;watchmedo tricks-from .tricks.yaml
+: 1438685258:0;git pull && ctags parts/omelette
+: 1438685258:0;cd /code
+: 1438685258:0;vim -n -S ~/.vim/sessions/belgianeidauth.vim
+: 1438685414:0;ls
+: 1438685423:0;vi parts/instance/etc/zope.conf
+: 1438685439:0;exit
+: 1438685443:0;bin/instance fg
+: 1438686141:0;vi parts/omelette/ZPublisher/BaseRequest.py
+: 1438686165:0;bin/instance fg
+: 1438686427:0;vi parts/omelette/ZPublisher/BaseRequest.py
+: 1438686436:0;bin/instance fg
+: 1438686480:0;vi parts/omelette/ZPublisher/BaseRequest.py
+: 1438686493:0;cd Products/BelgianEidAuthPlugin
+: 1438686493:0;ls
+: 1438686495:0;cd Extensions
+: 1438686495:0;ls
+: 1438686496:0;cd ..
+: 1438686502:0;git rm Extensions
+: 1438686505:0;ls
+: 1438686505:0;ls -la
+: 1438686506:0;cd ..
+: 1438686506:0;ls
+: 1438686509:0;cd ..
+: 1438686509:0;ls -la
+: 1438686510:0;git st
+: 1438686514:0;git status
+: 1438686527:0;git rm Products/BelgianEidAuthPlugin/Extensions/
+: 1438686531:0;git rm -r Products/BelgianEidAuthPlugin/Extensions/
+: 1438686536:0;git rm -r -f Products/BelgianEidAuthPlugin/Extensions/
+: 1438686537:0;git st
+: 1438686670:0;ls
+: 1438686675:0;cd Products/BelgianEidAuthPlugin
+: 1438686675:0;ls
+: 1438686683:0;vi configure.zcml
+: 1438686687:0;cd profiles/default
+: 1438686688:0;ls
+: 1438686694:0;cd ..
+: 1438686695:0;ls
+: 1438686698:0;cd default
+: 1438686700:0;mv skins.xml ../
+: 1438686701:0;ls
+: 1438686702:0;cd ..
+: 1438686703:0;ls
+: 1438686704:0;cd ..
+: 1438686704:0;ls
+: 1438686707:0;cd skins
+: 1438686707:0;ls
+: 1438686709:0;cd BelgianEidAuthPlugin
+: 1438686709:0;ls
+: 1438686713:0;vi logged_in.cpy
+: 1438686727:0;vi registered.pt
+: 1438686754:0;cd ..
+: 1438686754:0;ls
+: 1438686756:0;cd ..
+: 1438686756:0;ls
+: 1438686759:0;vi BelgianEidAuthPlugin.py
+: 1438700469:0;cd /code
+: 1438700469:0;vim -n -S ~/.vim/sessions/belgianeidauth.vim
+: 1438700469:0;git pull && ctags parts/omelette
+: 1438700469:0;watchmedo tricks-from .tricks.yaml
+: 1438700486:0;exit
+: 1438700491:0;ls
+: 1438700496:0;bin/instance fg
+: 1438700733:0;vi /code/Products/BelgianEidAuthPlugin/BelgianEidAuthPlugin.py
+: 1438700789:0;bin/instance fg
+: 1438701050:0;ls
+: 1438701053:0;cd Products
+: 1438701053:0;ls
+: 1438701055:0;cd BelgianEidAuthPlugin/l
+: 1438701058:0;cd BelgianEidAuthPlugin
+: 1438701059:0;ls
+: 1438701061:0;cd profiles
+: 1438701061:0;ls
+: 1438701066:0;mv skins.xml default
+: 1438701069:0;ls
+: 1438701070:0;cd ..
+: 1438701070:0;ls
+: 1438701071:0;cd ..
+: 1438701071:0;ls
+: 1438701074:0;bin/instance fg
+: 1438701174:0;cd BelgianEidAuthPlugin
+: 1438701174:0;ls
+: 1438701176:0;cd skins
+: 1438701177:0;ls
+: 1438701178:0;cd BelgianEidAuthPlugin
+: 1438701178:0;ls
+: 1438701183:0;grep isAnon *
+: 1438701200:0;vi login_form.cpt
+: 1438701591:0;find parts/omelette -name login_form.cpt
+: 1438701593:0;find parts/omelette -name login_form.pt
+: 1438701597:0;find -F parts/omelette -name login_form.pt
+: 1438701601:0;find -L parts/omelette -name login_form.pt
+: 1438701605:0;find -L parts/omelette -name login_form.cpt
+: 1438701610:0;vi parts/omelette/Products/CMFPlone/skins/plone_login/login_form.cpt
+: 1438701692:0;bin/instance fg
+: 1438702312:0;vi login_form.cpt
+: 1438702318:0;ls
+: 1438702319:0;cd ..
+: 1438702320:0;ls
+: 1438702321:0;cd ..
+: 1438702321:0;ls
+: 1438702328:0;vi profiles/default/skins.xml
+: 1438702429:0;ls
+: 1438702431:0;cd skins
+: 1438702431:0;ls
+: 1438702433:0;cd BelgianEidAuthPlugin
+: 1438702433:0;ls
+: 1438702439:0;vi login_form
+: 1438702441:0;vi login_form.cpt
+: 1438702755:0;ls
+: 1438702766:0;cd ..
+: 1438702766:0;ls
+: 1438702767:0;cd ..
+: 1438702767:0;ls
+: 1438702772:0;vi config
+: 1438702775:0;vi config.py
+: 1438702796:0;grep config *
+: 1438702805:0;ls
+: 1438702807:0;tig
+: 1438702812:0;git log
+: 1438702814:0;cd ..
+: 1438702814:0;ls
+: 1438702816:0;ls -la
+: 1438702819:0;cd BelgianEidAuthPlugin
+: 1438702820:0;ls
+: 1438702821:0;ls -la
+: 1438702822:0;cd ..
+: 1438702823:0;ls
+: 1438702824:0;git st
+: 1438702826:0;git status
+: 1438702933:0;ls
+: 1438702935:0;cd parts/omelette
+: 1438702935:0;ls
+: 1438702938:0;cd ..
+: 1438702942:0;ls
+: 1438702943:0;cd Products
+: 1438702943:0;ls
+: 1438702945:0;cd BelgianEidAuthPlugin
+: 1438702945:0;ls
+: 1438702947:0;vi setuphandlers.py
+: 1438702977:0;bin/instance fg
+: 1438703090:0;ls
+: 1438703098:0;vi skins/BelgianEidAuthPlugin/login_form.cpt
+: 1438703111:0;ls
+: 1438703112:0;cd ..
+: 1438703113:0;ls
+: 1438703114:0;git st

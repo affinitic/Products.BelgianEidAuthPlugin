@@ -13,13 +13,13 @@ build:
 	docker rm belgianeidauthplugin
 	rm Dockerfile
 up:
-	docker-compose run --service-ports web
+	docker-compose run --service-ports webdev
 run: up
 test:
 	docker-compose run web /code/bin/test
 debug-instance:
 	docker-compose run web /code/bin/instance debug
 debug:
-	docker run -p 8080:8080 -v $(PWD)/Products:/code/Products -ti $(IMAGE) /bin/bash
+	docker run --rm -p 8080:8080 -v $(PWD)/Products:/code/Products -ti $(IMAGE) /bin/bash
 dev:
 	docker-compose run webdev
