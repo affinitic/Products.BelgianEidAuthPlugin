@@ -11,7 +11,8 @@
 
 <body>
 <div metal:fill-slot="main">
-<div tal:condition="python: not isAnon">
+<div tal:define="isAnon context/@@plone_portal_state/anonymous"
+     tal:condition="python: not isAnon">
 
 <!-- This come from the insufficient_privileges template in portal_skins/plone_login ...-->
 <!-- Begin ... -->
@@ -32,13 +33,23 @@
 <div tal:condition="python: isAnon"
      tal:define="auth nocall:here/acl_users/credentials_cookie_auth|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
-                 came_from python:test(utool.isURLInPortal(came_from), came_from, None);
+                 isAnon context/@@plone_portal_state/anonymous;
+                 plone context/@@plone;
+                 nav_root plone/navigationRootUrl;
+                 isURLInPortal nocall:context/portal_url/isURLInPortal;
+                 came_from python:test(isURLInPortal(came_from), came_from, None);
                  errors options/state/getErrors;
                  ac_name auth/name_cookie|string:__ac_name;
                  ac_password auth/pw_cookie|string:__ac_password;
                  ac_persist auth/persist_cookie|nothing;
+                 mail_password python:test(checkPermission('Mail forgotten password', context), nav_root + '/mail_password_form', '');
+                 mail_password_url request/mail_password_url|nothing;
+                 mail_password_url python:test(mail_password_url and isURLInPortal(mail_password_url), mail_password_url, mail_password);
                  login_name python:request.get('login_name', request.get(ac_name, ''));
                  can_join python:checkPermission('Add portal member', here);
+                 ztu modules/ZTUtils;
+                 target request/target|nothing;
+                 target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
                  plugins python:context.checkActivatedPlugins()">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
@@ -74,9 +85,8 @@ If you do not have an account here, head over to the
 <strong><p i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_desc">When you have subscribed, you have two possibilities to connect :</p></strong>
 <p class="discreet" i18n:domain="belgianeidauthplugin" i18n:translate="help_difference_description">What is the difference?  By connecting with your eID card, you will be redirected to a HTTPS site wich mean more security for transactions.  Moreover, when you connect with your eID card, you will be able to receive more services than when you are connected using the classical username/password method.  You will be warned in the site while a authentication with an eID card is required to access a particular service.</p>
 </tal:explain_possibilites>
-
 <tal:plugins repeat="plugin plugins">
-<tal:belgianeidauthplugin_activated condition="python: plugin == 'BelgianEidAuthPlugin'">
+<tal:belgianeidauthplugin_activated condition="python: plugin == 'eid'">
 <fieldset style="padding-bottom: 1em; margin-bottom: 1.5em; ">
 <legend><strong i18n:domain="belgianeidauthplugin" i18n:translate="connect_eid_with_eid">Using your eid card</strong></legend>
 <img class="LSBox" src="chip.gif" />
@@ -107,7 +117,7 @@ If you do not have an account here, head over to the
                    name="submit"
                    value="Log in"
                    i18n:attributes="value label_log_in;"
-                   tal:attributes="tabindex tabindex/next;
+                   tal:attributes="
                                onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
                    />
         </div>
@@ -156,8 +166,7 @@ To obtain a username and password, you must first go to the <a href="join_form">
                    tabindex=""
                    tal:attributes="name ac_name;
                                    id ac_name;
-                                   value login_name;
-                                   tabindex tabindex/next;"
+                                   value login_name;"
                    />
 
     </div>
@@ -181,8 +190,7 @@ To obtain a username and password, you must first go to the <a href="join_form">
                    size="15"
                    tabindex=""
                    tal:attributes="name ac_password;
-                                   id ac_password;
-                                   tabindex tabindex/next;"
+                                   id ac_password;"
                    />
     </div>
 
@@ -195,7 +203,6 @@ To obtain a username and password, you must first go to the <a href="join_form">
                    id="cb_remember"
                    tabindex=""
                    tal:attributes="name ac_persist;
-                                   tabindex tabindex/next;
                                    checked python:request.get(ac_name, '') and 'checked' or None;"
                    />
 
@@ -216,7 +223,7 @@ To obtain a username and password, you must first go to the <a href="join_form">
                    name="submit"
                    value="Log in"
                    i18n:attributes="value label_log_in;"
-                   tal:attributes="tabindex tabindex/next;
+                   tal:attributes="
                                onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
                    />
         </div>
@@ -224,9 +231,9 @@ To obtain a username and password, you must first go to the <a href="join_form">
              i18n:translate="help_password_retrieval">
          If you have forgotten your password,
          <span i18n:name="click_here">
-      <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
-         i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a>
-         </span>.
+                        <a tal:define="mail_password_url python:mail_password_url+test(mail_password_url.find('?')==-1, '?', '&amp;')+ztu.make_query(userid=login_name)"
+                            tal:attributes="href mail_password_url; target target;"
+                           i18n:translate="label_click_here_to_retrieve">we can send you a new one</a></span>
         </div>
 
         <p i18n:translate="remember_to_log_out">
