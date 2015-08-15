@@ -12,5 +12,10 @@
      description="Extension profile for Products.BelgianEidAuthPlugin."
      provides="Products.GenericSetup.interfaces.EXTENSION" />
 
+  <subscriber
+    for="Products.PlonePAS.events.UserLoggedInEvent"
+    handler=".events.user_logged_in"
+    />
+
 
 </configure>
