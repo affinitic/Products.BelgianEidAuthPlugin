@@ -57,14 +57,14 @@ membership_tool.loginUser(REQUEST)
 #we use the key 'eid_username', because 'eid_from_http' does not mean that the user is connected, but mean that the user try to connect...
 #'eid_username' = logged user, eid_from_http could cause breakage if user try to connect with his eID card, is not subscribed and try after to connect using his username and password, we MUST make sure that he do not receive the MemberWithEid role !!!
 
-if context.REQUEST.SESSION.has_key('eid_username'):
-    context.acl_users.portal_role_manager.assignRoleToPrincipal('MemberWithEid', member.getId())
-else:
-    context.acl_users.portal_role_manager.removeRoleFromPrincipal('MemberWithEid', member.getId())
+#if context.REQUEST.SESSION.has_key('eid_username'):
+#    context.acl_users.portal_role_manager.assignRoleToPrincipal('MemberWithEid', member.getId())
+#else:
+#    context.acl_users.portal_role_manager.removeRoleFromPrincipal('MemberWithEid', member.getId())
 
 #this is managed in BelgianEidAuthPlugin.py too
-if not context.REQUEST.SESSION.has_key('eid_logged_in_executed'):
-    context.REQUEST.SESSION.set('eid_logged_in_executed', 1)
+#if not context.REQUEST.SESSION.has_key('eid_logged_in_executed'):
+#    context.REQUEST.SESSION.set('eid_logged_in_executed', 1)
 
 #<-- end of patch
 return state
