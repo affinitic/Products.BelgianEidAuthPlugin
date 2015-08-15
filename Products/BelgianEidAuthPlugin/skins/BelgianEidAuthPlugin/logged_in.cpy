@@ -7,24 +7,36 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Initial post-login actions
-##
+# Products.CMFPlone/skins/plone_login/logged_in.cpy
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-REQUEST=context.REQUEST
 
-# If someone has something on their clipboard, expire it.
-if REQUEST.get('__cp', None) is not None:
-    REQUEST.RESPONSE.expireCookie('__cp', path='/')
+REQUEST = context.REQUEST
 
-membership_tool=context.portal_membership
+membership_tool = getToolByName(context, 'portal_membership')
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    context.plone_utils.addPortalMessage(_(u'Login failed'))
+    email_login = getToolByName(context, 'portal_properties') \
+                    .site_properties.getProperty('use_email_as_login')
+    if email_login:
+        context.plone_utils.addPortalMessage(
+            _(u'Login failed. Both email address and password are case '
+              u'sensitive, check that caps lock is not enabled.'),
+            'error')
+    else:
+        context.plone_utils.addPortalMessage(
+            _(u'Login failed. Both login name and password are case '
+              u'sensitive, check that caps lock is not enabled.'),
+            'error')
     return state.set(status='failure')
-    
+
+from DateTime import DateTime
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', '2000/01/01')
-initial_login = int(str(login_time) == '2000/01/01')
+if not isinstance(login_time, DateTime):
+    login_time = DateTime(login_time)
+initial_login = int(login_time == DateTime('2000/01/01'))
 state.set(initial_login=initial_login)
 
 must_change_password = member.getProperty('must_change_password', 0)
@@ -35,8 +47,7 @@ if initial_login:
 elif must_change_password:
     state.set(status='change_password')
 
-membership_tool.setLoginTimes()
-membership_tool.createMemberArea()
+membership_tool.loginUser(REQUEST)
 
 #code above come from Plone
 #if user is logged with his eID card, we add him a role called MemberWithEid
@@ -54,6 +65,6 @@ else:
 #this is managed in BelgianEidAuthPlugin.py too
 if not context.REQUEST.SESSION.has_key('eid_logged_in_executed'):
     context.REQUEST.SESSION.set('eid_logged_in_executed', 1)
-    
+
 #<-- end of patch
 return state
