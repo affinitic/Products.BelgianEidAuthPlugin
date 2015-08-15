@@ -48,7 +48,7 @@ def manage_addBelgianEidAuthPlugin(dispatcher, id, title=None, REQUEST=None):
     """ Add a BelgianEidAuthPlugin to a Pluggable Auth Service. """
 
     obj = BelgianEidAuthPlugin(id, title)
-    
+
     dispatcher._setObject(obj.getId(), obj)
 
     if REQUEST is not None:
@@ -64,7 +64,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
     meta_type = 'BelgianEidAuthPlugin'
 
     security = ClassSecurityInfo()
-    
+
     def __init__(self, id, title=None):
         self._id = self.id = id
         self.title = title
@@ -75,23 +75,23 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
     security.declarePrivate('authenticateCredentials')
     def authenticateCredentials(self, credentials):
 
-        """ 
+        """
             See IAuthenticationPlugin.
             o We expect the credentials to be those returned by ILoginPasswordExtractionPlugin.
             o We do not need a password if we receive can access data in the REQUEST
-            
+
             XXX We should not use the lookup if we receive valid HTTPS credentials and the user has not been found once, because the user could connect using his username/passwd and we could check to many times
         """
         #print "credentials = ", credentials
         debug = False
         #print "BelgianEidAuthPlugin : debug mode is %s" % debug
-        
+
         if debug:
             return "User", "user"
-            
+
         if credentials.has_key('eid_from_http'):
             #we received something, the user is using his eID card, proceed
-            
+
             if self.REQUEST.SESSION.has_key('eid_username'):
                 #we already check in users if the actual user exist, we return it
                 #we return the user
@@ -116,23 +116,23 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                         not_redirectable_urls = ['login', 'login_success', 'login_password', 'login_failed',
                                                'logged_in', 'logged_out', 'logout', 'registered',
                                                'mail_password', 'mail_password_form', 'join_form',
-                                               'require_login', 'member_search_results'] 
+                                               'require_login', 'member_search_results']
                         redirectable = True
                         for not_redirectable_url in not_redirectable_urls:
                             if not_redirectable_url in self.REQUEST.get('URL'):
                                 #print "not redir found"
                                 redirectable = False
                                 break
-                                
+
                         if redirectable:
                             #print "redir found and executed"
                             self.REQUEST.SESSION.set('eid_logged_in_executed', 1)
                             portal = getToolByName(self, 'portal_url').getPortalObject()
                             self.REQUEST.RESPONSE.redirect(portal.portal_properties.site_properties.getProperty('https_address') + 'logged_in?came_from=%s' % self.REQUEST.get('URL'))
-                    
+
                     self.REQUEST.SESSION.set('eid_username', user_name)
-                    return user_name, user_name                    
-                
+                    return user_name, user_name
+
                 #we will return None if the user has not be found in the database
                 return None
         else:
@@ -143,20 +143,20 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
 
     security.declarePrivate('extractCredentials')
     def extractCredentials(self, request):
-        """ 
-            Extract eid userinfo from request 
+        """
+            Extract eid userinfo from request
             These informations will be used by authenticateCredentials as it receive them as parameter
         """
         #if the user try to connect using his eID card and that the getClientData has returned the 'eid_nr'
         #we could suppose that we have eid_from_http but not 'eid_nr' altought it should not happen...
-        
+
         creds = {}
         #we know that we have already extracted the credentials only if :
         #--> 'eid_from_http' is set in SESSION --> we have already encountered the HTTPS support
         #--> 'eid_nr' is set in SESSION --> we have successfully extracted nr from 'HTTP_SSL_CLIENT_S_DN' with the getClientData method
         #--> 'HTTP_SSL_CLIENT_S_DN' is in the REQUEST --> Apache still send the SSL var
         #--> 'HTTP_SSL_CLIENT_S_DN' in REQUEST is equal to 'eid_http_ssl_client_s_dn' in SESSION wich means that the user as not changed
-        
+
         if request.SESSION.has_key('eid_from_http') and request.get('HTTP_SSL_CLIENT_S_DN') and request.get('HTTP_SSL_CLIENT_S_DN') == request.SESSION.get('eid_http_ssl_client_s_dn'):
                 #we still check if 'HTTP_SSL_CLIENT_S_DN' is in the REQUEST because Apache could remove it
                 #we already parsed 'HTTP_SSL_CLIENT_S_DN', we use 'eid_nr' stored in SESSION object
@@ -194,11 +194,11 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
                     creds.update({'eid_from_http':0})
             else:
                 creds.update({'eid_from_http':0})
-                    
+
         #If we can not get this from the REQUEST, we are not in a correctly configured HTTPS mode
         #we remove the keys from SESSION !!!
         #--> 'eid_from_http' in creds == 0 if from_hhtp is None or if nr returned by getClientData is None
-        
+
         #XXX performance problem at trying to delete the keys from SESSION when not using eID card???  The plugin will always do this try/catch...
         if creds['eid_from_http'] == 0:
             try:
@@ -209,20 +209,20 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             except KeyError:
                 #if 'eid_nr' or 'eid_from_hhtp' or 'eid_http_ssl_client_s_dn' or 'eid_username' does not exist in SESSION, we pass, they already have been deleted
                 pass
-        
+
         return None
-        
+
 
     security.declarePrivate('getClientData')
     def getClientData(self, from_http):
-        """ 
+        """
         We receive a String, we need to parse it to return the name, first_name and nr (national register number)
         """
         #there can be UTF/ISO encoding problems with OpenSSL/Apache, so we do what we have to to correct this
         #UTF-8 codes are not passed as codes but as string
         #"é" should be '\xc3\xa9' but it is returned as '\\xc3\\xa9'
         nr = first_name = last_name = full_name = None
-        
+
         try:
             #we need to correct the string if we wish to retrieve CN/SN/GN datas from from_http
             corrected_string = eval("u'" + from_http + "'")
@@ -245,10 +245,10 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             #we check that there are 11 numbers left
             if len(nr) != 11:
                 raise ValueError
-    
+
             first_part = int(nr[0:9])
             last_part = int(nr[9:11])
-    
+
             #the two last digits is the result of 97 les the modulo by 97 of the 10 first digits
             if last_part != (97 - (first_part%97)):
                 raise ValueError
@@ -258,7 +258,7 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             logger = logging.getLogger('BelgianEidAuthPlugin')
             logger.info("Failed to extract datas from from_http in getClientData(self, from_http).")
             return None
-        
+
         return (nr, last_name, first_name, full_name)
 
 
@@ -269,14 +269,14 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
         """
         for user in self.acl_users.getUsers():
             props = self.acl_users.mutable_properties.getPropertiesForUser(user)._properties
-            
+
             #the property 'nationalregister' could not exist, so we try and catch
             try:
                 if props['nationalregister'] == nr:
                     return user.getId()
             except KeyError:
                 pass
-        
+
         return None
 
 
