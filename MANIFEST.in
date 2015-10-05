@@ -1,0 +1,23 @@
+include *.GPL
+include *.ZPL
+include *.py
+include *.tmpl
+include *.txt
+include *.yaml
+include *.yml
+include Makefile
+include buildout.cfg
+include versions.cfg
+recursive-include Products *.cpt
+recursive-include Products *.cpy
+recursive-include Products *.dtml
+recursive-include Products *.gif
+recursive-include Products *.metadata
+recursive-include Products *.po
+recursive-include Products *.pt
+recursive-include Products *.py
+recursive-include Products *.txt
+recursive-include Products *.vpy
+recursive-include Products *.xml
+recursive-include Products *.zcml
+recursive-include Products *.zpt
