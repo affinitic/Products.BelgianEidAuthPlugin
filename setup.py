@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1.1+cirb'
+version = '0.1.2+cirb.dev0'
 
 long_description = (
     open('README.txt').read()

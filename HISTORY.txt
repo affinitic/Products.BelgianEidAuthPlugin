@@ -7,6 +7,12 @@
 200607010.1 Alpha2
 --> Connection based on national register number :
         --> connection is available manually (username+passwd) and with eID card
+0.1.2+cirb (unreleased)
+-----------------------
+
+- Nothing changed yet.
+
+
 0.1.1+cirb (2015-10-05)
 --> Depends on CPDescriptive product for memberdata extension and subscribing form
 
