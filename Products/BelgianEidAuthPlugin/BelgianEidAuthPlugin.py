@@ -228,7 +228,10 @@ class BelgianEidAuthPlugin(BasePlugin, Cacheable):
             corrected_string = eval("u'" + from_http + "'")
             corrected_string = corrected_string.encode('latin1')
             corrected_string = unicode(corrected_string, 'utf-8')
-            datas = corrected_string.split(',')
+            separator = ','
+            if corrected_string.count('/') >= 4:
+                separator = '/'
+            datas = corrected_string.split(separator)
             #search for SN, GN and serialNumber
             for data in datas:
                 if data[:12] == "serialNumber":
